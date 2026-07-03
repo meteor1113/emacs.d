@@ -92,19 +92,6 @@
 (unless (key-binding [mouse-5])
   (global-set-key [mouse-5] 'mwheel-scroll)) ; putty
 
-(global-set-key [header-line double-mouse-1]
-                '(lambda ()
-                   (interactive)
-                   (let* ((i 1)
-                          (name (format "new %d" i)))
-                     (while (get-buffer name)
-                       (setq i (1+ i))
-                       (setq name (format "new %d" i)))
-                     (switch-to-buffer name))))
-;; (global-set-key [header-line double-mouse-1]
-;;                 '(lambda () (interactive) (switch-to-buffer "new")))
-(global-set-key [header-line mouse-3] 'kill-this-buffer)
-
 (global-set-key [left-fringe mouse-2] nil)
 (global-set-key [left-margin mouse-2] nil)
 (global-set-key (kbd "<left-margin> <mouse-2>")

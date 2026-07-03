@@ -27,7 +27,6 @@
 
 (ignore-errors (tool-bar-mode t))
 (setq tool-bar-style 'image)
-(setq tab-line-close-tab-function 'kill-buffer)
 (ignore-errors (global-tab-line-mode t))
 (column-number-mode t)
 (size-indication-mode 1)

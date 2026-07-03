@@ -159,7 +159,8 @@
 
 ;; treemacs
 (use-package treemacs
-  :commands (treemacs))
+  :commands (treemacs)
+  :hook (window-setup-hook . treemacs))
 
 ;; undo-tree
 ;; (autoload 'undo-tree-mode "undo-tree" nil t)

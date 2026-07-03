@@ -13,136 +13,57 @@
 
 ;;; Code:
 
-;; tabbar
-(add-hook 'after-init-hook
-          '(lambda ()
-             (when (or (daemonp) (not (locate-library "tabbar-ruler")))
-               (ignore-errors (tabbar-mode 1))))
-          'append)
+;; tab-line
 
-(eval-after-load "tabbar"
-  '(progn
-     ;; backup tabbar.el's button image
-     ;; (setq tabbar-home-button-enabled-image-orig tabbar-home-button-enabled-image
-     ;;       tabbar-home-button-disabled-image-orig tabbar-home-button-disabled-image
-     ;;       tabbar-scroll-left-button-enabled-image-orig tabbar-scroll-left-button-enabled-image
-     ;;       tabbar-scroll-right-button-enabled-image-orig tabbar-scroll-right-button-enabled-image)
+(set-face-attribute 'tab-line nil :height 1.0)
+;; (setq tab-line-close-tab-function 'kill-buffer)
+(setq tab-line-close-tab-function
+      (lambda (tab)
+        (when (buffer-live-p tab)
+          (if (buffer-file-name tab)
+              (kill-buffer tab)
+            (if (eq tab (current-buffer))
+                (bury-buffer)
+              (set-window-prev-buffers nil (assq-delete-all tab (window-prev-buffers)))
+              (set-window-next-buffers nil (delq tab (window-next-buffers))))))))
 
-     (defadvice tabbar-buffer-tab-label (after modified-flag activate)
-       (setq ad-return-value
-             (if (and (or (not (featurep 'tabbar-ruler))
-                          (not window-system))
-                      (buffer-modified-p (tabbar-tab-value tab)))
-                 ;; (buffer-file-name (tabbar-tab-value tab))
-                 (concat ad-return-value "*")
-               ad-return-value)))
+(global-set-key [tab-line double-mouse-1]
+                '(lambda ()
+                   (interactive)
+                   (let* ((i 1)
+                          (name (format "new %d" i)))
+                     (while (get-buffer name)
+                       (setq i (1+ i))
+                       (setq name (format "new %d" i)))
+                     (switch-to-buffer name))))
 
-     (defun update-tabbar-modified-state ()
-       (tabbar-set-template tabbar-current-tabset nil)
-       (tabbar-display-update))
-
-     (defadvice undo (after update-tabbar-tab-label activate)
-       (update-tabbar-modified-state))
-
-     (defadvice set-buffer-file-coding-system (after update-tabbar-tab-label activate)
-       (update-tabbar-modified-state))
-
-     (define-key tabbar-mode-map [C-prior] 'tabbar-backward)
-     (define-key tabbar-mode-map [C-next] 'tabbar-forward)
-     (add-hook 'first-change-hook 'update-tabbar-modified-state)
-     (add-hook 'after-save-hook 'update-tabbar-modified-state)))
-
-;; tabbar-ruler
-(setq tabbar-ruler-invert-deselected nil)
-(setq tabbar-ruler-movement-timer-delay 10000)
-(add-hook 'after-init-hook
-          '(lambda ()
-             (when (not (daemonp))
-               (require 'tabbar-ruler nil 'noerror)))
-          t)
-
-(eval-after-load "tabbar-ruler"
-  '(progn
-     (tabbar-ruler-remove-caches)
-
-     ;; restore tabbar.el's button image
-     ;; (setq tabbar-home-button-enabled-image tabbar-home-button-enabled-image-orig
-     ;;       tabbar-home-button-disabled-image tabbar-home-button-disabled-image-orig
-     ;;       tabbar-scroll-left-button-enabled-image tabbar-scroll-left-button-enabled-image-orig
-     ;;       tabbar-scroll-right-button-enabled-image tabbar-scroll-right-button-enabled-image-orig)
-     ;; (setq tabbar-home-button
-     ;;       (cons (cons "[o]" tabbar-home-button-enabled-image)
-     ;;             (cons "[x]" tabbar-home-button-disabled-image)))
-     ;; (setq tabbar-buffer-home-button
-     ;;       (cons (cons "[+]" tabbar-home-button-enabled-image)
-     ;;             (cons "[-]" tabbar-home-button-disabled-image)))
-     ;; (setq tabbar-scroll-left-button
-     ;;       (cons (cons " <" tabbar-scroll-left-button-enabled-image)
-     ;;             (cons " =" nil)))
-     ;; (setq tabbar-scroll-right-button
-     ;;       (cons (cons " >" tabbar-scroll-right-button-enabled-image)
-     ;;             (cons " =" nil)))
-
-     (defadvice tabbar-popup-menu (after add-menu-item activate)
-       "Add customize menu item to tabbar popup menu."
-       (setq ad-return-value
-             (append ad-return-value
-                     '("--"
-                       ["Copy Buffer Name" (kill-new
-                                            (buffer-name
-                                             (tabbar-tab-value
-                                              tabbar-last-tab)))]
-                       ["Copy File Path" (kill-new
-                                          (buffer-file-name
-                                           (tabbar-tab-value
-                                            tabbar-last-tab)))
-                        :active (buffer-file-name
-                                 (tabbar-tab-value tabbar-last-tab))]
-                       ["Open Dired" dired-jump
-                        :active (fboundp 'dired-jump)]
-                       ["Open in Windows Explorer" (w32explore buffer-file-name)
-                        :active (and buffer-file-name
-                                     (eq system-type 'windows-nt)
-                                     (require 'w32-browser nil 'noerror))]
-                       "--"
-                       ["Undo Close Tab" undo-kill-buffer
-                        :active (fboundp 'undo-kill-buffer)]))))
-
-     (defadvice tabbar-line-tab (around window-or-terminal activate)
-       "Fix tabbar-ruler in terminal"
-       (if window-system
-           ad-do-it
-         (setq ad-return-value
-               (let ((tab (ad-get-arg 0))
-                     (tabbar-separator-value "|"))
-                 (concat (propertize
-                          (if tabbar-tab-label-function
-                              (funcall tabbar-tab-label-function tab)
-                            tab)
-                          'tabbar-tab tab
-                          'local-map (tabbar-make-tab-keymap tab)
-                          'help-echo 'tabbar-help-on-tab
-                          'mouse-face 'tabbar-highlight
-                          'face (if (tabbar-selected-p tab
-                                                       (tabbar-current-tabset))
-                                    'tabbar-selected
-                                  'tabbar-unselected)
-                          'pointer 'hand)
-                         tabbar-separator-value)))))
-
-     ;; ;; (unless (eq system-type 'windows-nt)
-     ;; (set-face-attribute 'tabbar-default nil
-     ;;                     :family (face-attribute 'default :family))
-     ;; (add-hook 'after-make-frame-functions
-     ;;           (lambda (frame)
-     ;;             (with-selected-frame frame
-     ;;               (set-face-attribute 'tabbar-default frame
-     ;;                                   :family (face-attribute 'default
-     ;;                                                           :family)))));; )
-     ;; (setq tabbar-ruler-excluded-buffers '())
-     (set-face-attribute 'tabbar-selected nil
-                         :foreground "blue")
-     (tabbar-ruler-group-buffer-groups)))
+;; (eval-after-load "tabbar-ruler"
+;;   '(progn
+;;      (defadvice tabbar-popup-menu (after add-menu-item activate)
+;;        "Add customize menu item to tabbar popup menu."
+;;        (setq ad-return-value
+;;              (append ad-return-value
+;;                      '("--"
+;;                        ["Copy Buffer Name" (kill-new
+;;                                             (buffer-name
+;;                                              (tabbar-tab-value
+;;                                               tabbar-last-tab)))]
+;;                        ["Copy File Path" (kill-new
+;;                                           (buffer-file-name
+;;                                            (tabbar-tab-value
+;;                                             tabbar-last-tab)))
+;;                         :active (buffer-file-name
+;;                                  (tabbar-tab-value tabbar-last-tab))]
+;;                        ["Open Dired" dired-jump
+;;                         :active (fboundp 'dired-jump)]
+;;                        ["Open in Windows Explorer" (w32explore buffer-file-name)
+;;                         :active (and buffer-file-name
+;;                                      (eq system-type 'windows-nt)
+;;                                      (require 'w32-browser nil 'noerror))]
+;;                        "--"
+;;                        ["Undo Close Tab" undo-kill-buffer
+;;                         :active (fboundp 'undo-kill-buffer)]))))
+;;      ))
 
 (provide 'init-tabbar)
 
