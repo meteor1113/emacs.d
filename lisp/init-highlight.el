@@ -46,133 +46,70 @@
         ((= mode 2)
          (highlight-text "" 'hl-double-click 'hl-double-click))))
 
-;; (defvar hl-double-click-regexp "")
-;; (defadvice mouse-start-end (after hl-double-click (start end mode) activate)
-;;   (cond ((= mode 1)
-;;          (unhighlight-regexp hl-double-click-regexp)
-;;          (let ((txt (buffer-substring-no-properties (nth 0 ad-return-value)
-;;                                                     (nth 1 ad-return-value))))
-;;            (unless (or (string= txt "")
-;;                        (string-match "^[\t\n\s]*$" txt)
-;;                        (string-match "\n" txt))
-;;              (setq hl-double-click-regexp
-;;                    (concat "\\_<" (regexp-quote txt) "\\_>"))
-;;              (highlight-regexp hl-double-click-regexp 'hl-double-click))))
-;;         ((= mode 2)
-;;          (unhighlight-regexp hl-double-click-regexp))))
+;; (defun highlight-text-at-point ()
+;;   (interactive)
+;;   (highlight-text nil 'hl-at-point 'show-paren-match)
+;;   (let* ((target-symbol (symbol-at-point))
+;;          (txt (symbol-name target-symbol))
+;;          (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
+;;     (when target-symbol
+;;       (highlight-text regexp 'hl-at-point 'show-paren-match))))
 
-(defun highlight-text-at-point ()
-  (interactive)
-  (highlight-text nil 'hl-at-point 'show-paren-match)
-  (let* ((target-symbol (symbol-at-point))
-         (txt (symbol-name target-symbol))
-         (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
-    (when target-symbol
-      (highlight-text regexp 'hl-at-point 'show-paren-match))))
+;; (global-set-key [(meta f1)] 'highlight-text-at-point)
+;; (global-set-key (kbd "ESC <f1>") 'highlight-text-at-point)
 
-(global-set-key [(meta f1)] 'highlight-text-at-point)
+(use-package symbol-overlay
+  :hook ((prog-mode . symbol-overlay-mode))
+  :init
+  ;; (setq symbol-overlay-idle-time 0.5)
+  :bind
+  (("M-i" . symbol-overlay-put)
+   ("M-n" . symbol-overlay-switch-forward)
+   ("M-p" . symbol-overlay-switch-backward)
+   ;; ("<f7>" . symbol-overlay-mode)
+   ;; ("<f8>" . symbol-overlay-remove-all)
+   )
+  :config
+  ;; (advice-add 'mouse-start-end :after
+  ;;             (defun hl-double-click-advice (start end mode)
+  ;;               (cond ((= mode 1)
+  ;;                      (symbol-overlay-remove-all)
+  ;;                      (symbol-overlay-put))
+  ;;                     ((= mode 2)
+  ;;                      (symbol-overlay-remove-all)))))
+  (eval-after-load "pulse"
+    '(progn
+       (advice-add 'symbol-overlay-jump-next :after (lambda (&rest _) (pulse-line-hook-function)))
+       (advice-add 'symbol-overlay-jump-prev :after (lambda (&rest _) (pulse-line-hook-function)))
+       (advice-add 'symbol-overlay-switch-forward :after (lambda (&rest _) (pulse-line-hook-function)))
+       (advice-add 'symbol-overlay-switch-backward :after (lambda (&rest _) (pulse-line-hook-function)))))
+  )
 
-;; highlight-symbol
-(setq highlight-symbol-idle-delay 0.5)
-(add-hook 'prog-mode-hook
-          '(lambda ()
-             (ignore-errors (highlight-symbol-mode 1))))
+(use-package highlight-parentheses
+  :hook ((prog-mode . highlight-parentheses-mode))
+  :init
+  (add-hook 'minibuffer-setup-hook #'highlight-parentheses-minibuffer-setup)
+  )
 
-(defun highlight-symbol-next-or-prev (&optional prev)
-       (interactive "P")
-       (if prev
-           (highlight-symbol-prev)
-         (highlight-symbol-next)))
+(use-package hl-todo
+  :hook (after-init . global-hl-todo-mode)
+  ;; :bind (("C-c n" . hl-todo-next)
+  ;;        ("C-c p" . hl-todo-previous)
+  ;;        ("C-c o" . hl-todo-occur))
+  :config
+  )
 
-(global-set-key [(meta f3)] 'highlight-symbol-at-point)
-(global-set-key (kbd "ESC <f3>") 'highlight-symbol-at-point) ; putty
-(global-set-key [f3] 'highlight-symbol-next-or-prev)
-(global-set-key [(shift f3)] 'highlight-symbol-prev)
-(global-set-key [f15] 'highlight-symbol-prev) ; S-f3
-;; (global-set-key (kbd "ESC ESC <f3>") 'highlight-symbol-prev)
-(global-set-key [(control f3)] 'highlight-symbol-query-replace)
+(use-package diff-hl
+  :hook ((prog-mode . turn-on-diff-hl-mode)
+         (vc-dir-mode . turn-on-diff-hl-mode)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
+  :config
+  (setq diff-hl-draw-borders nil)
+  )
 
-(eval-after-load "highlight-symbol"
-  '(progn
-     (defadvice highlight-symbol-mode (after disable activate)
-       "Disable highlight-symbol-mode-post-command."
-       (remove-hook 'post-command-hook 'highlight-symbol-mode-post-command t))
-
-     ;; (custom-set-faces
-     ;;  '(highlight-symbol-face
-     ;;    ((((class color) (background dark)) (:background "magenta"))
-     ;;     (((class color) (background light)) (:background "gray83")))))
-     (set-face-background 'highlight-symbol-face
-                          (if window-system "gray83" "magenta"))
-     ;; (if (eq frame-background-mode 'dark) "magenta" "gray83"))
-
-     (if (daemonp)
-         (add-hook 'after-make-frame-functions
-                   (lambda (frame)
-                     (with-selected-frame frame
-                       (set-face-background 'highlight-symbol-face
-                                            (if window-system "gray83" "magenta")
-                                            frame)))))
-
-     ;; (defun highlight-symbol-temp-highlight () ; Hack for emacs-21
-     ;;   "Highlight the current symbol until a command is executed."
-     ;;   (when highlight-symbol-mode
-     ;;     (let ((symbol (highlight-symbol-get-symbol)))
-     ;;       (unless (or (equal symbol highlight-symbol)
-     ;;                   (member symbol highlight-symbol-list))
-     ;;         (highlight-symbol-mode-remove-temp)
-     ;;         (when symbol
-     ;;           (setq highlight-symbol symbol)
-     ;;           (if (< emacs-major-version 22)
-     ;;               (let ((color `((background-color . ,"grey")
-     ;;                              (foreground-color . "black"))))
-     ;;                 (hi-lock-set-pattern `(,symbol (0 (quote ,color) t))))
-     ;;             (hi-lock-set-pattern symbol 'highlight-symbol-face)))))))
-
-     (eval-after-load "pulse"
-	   '(progn
-          (defadvice highlight-symbol-next (after pulse-advice activate)
-            (pulse-line-hook-function))
-          (defadvice highlight-symbol-prev (after pulse-advice activate)
-            (pulse-line-hook-function))
-          (defadvice highlight-symbol-next-or-prev (after pulse-advice activate)
-            (pulse-line-hook-function))))))
-
-;; highlight-tail
-;; (autoload 'highlight-tail-mode "highlight-tail" nil t)
-
-;; highlight-parentheses
-;; (autoload 'highlight-parentheses-mode "highlight-parentheses" nil t)
-;; (add-hook 'find-file-hooks
-;;           (lambda ()
-;;             (when (require 'highlight-parentheses nil 'noerror)
-;;               (highlight-parentheses-mode t))))
-
-;; hl-todo
-(setq hl-todo-activate-in-modes
-      '(prog-mode text-mode))
-(add-hook 'after-init-hook
-          '(lambda ()
-             (ignore-errors (global-hl-todo-mode 1))))
-;; (run-with-idle-timer 3 nil #'global-hl-todo-mode 1)
-
-;; diff-hl
-;; (autoload 'diff-hl-mode "diff-hl" nil t)
-;; (autoload 'global-diff-hl-mode "diff-hl" nil t)
-;; (autoload 'diff-hl-dired-mode "diff-hl-dired" nil t)
-;; (add-hook 'dired-mode-hook '(lambda () (ignore-errors (diff-hl-dired-mode 1))))
-(add-hook 'after-init-hook
-          '(lambda ()
-             (ignore-errors (global-diff-hl-mode 1))))
-;; (run-with-idle-timer 3 nil #'global-diff-hl-mode 1)
-
-;; volatile-highlights
-(autoload 'volatile-highlights-mode "volatile-highlights" nil t)
-(add-hook 'after-init-hook
-          '(lambda ()
-             (when (require 'volatile-highlights nil 'noerror)
-               (volatile-highlights-mode t))))
-;; (run-with-idle-timer 3 nil #'volatile-highlights-mode t)
+(use-package volatile-highlights
+  :config
+  (volatile-highlights-mode 1))
 
 (provide 'init-highlight)
 

@@ -15,7 +15,6 @@
 
 ;;; Code:
 
-;; bm
 (use-package bm
   ;; :ensure t
   :demand t

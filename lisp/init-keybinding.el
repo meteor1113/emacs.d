@@ -60,6 +60,7 @@
 (global-set-key [S-f4] 'previous-error)
 (global-set-key [f16] 'previous-error)  ; S-f4
 
+(global-set-key (kbd "C-w") 'kill-current-buffer)
 (global-set-key [C-f4] 'kill-this-buffer)
 (global-set-key (kbd "ESC <f4>") 'kill-this-buffer) ; putty
 (global-set-key (kbd "C-S-t") 'undo-kill-buffer)

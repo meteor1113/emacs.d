@@ -40,7 +40,6 @@
   (dolist (elt package-alist)
     (package--compile (car (cdr elt)))))
 
-;; auto-package-update
 (use-package auto-package-update
   :ensure t
   :custom
@@ -50,7 +49,6 @@
   :config
   (auto-package-update-maybe))
 
-;; ace-jump-mode
 (use-package ace-jump-mode
   ;; :ensure t
   :defer t
@@ -63,7 +61,6 @@
 ;;           '(lambda ()
 ;;              (ignore-errors (global-aggressive-indent-mode 1))))
 
-;; anzu
 (use-package anzu
   :demand t
   :bind
@@ -77,7 +74,6 @@
   :config
   (global-anzu-mode +1))
 
-;; ascii-table
 (use-package ascii-table
   :commands (ascii-table))
 
@@ -88,7 +84,6 @@
 ;;              (ignore-errors (drag-stuff-global-mode t))))
 ;; ;; (run-with-idle-timer 3 nil #'drag-stuff-global-mode t)
 
-;; editorconfig
 (use-package editorconfig
   :demand t
   :config (editorconfig-mode 1))
@@ -137,7 +132,6 @@
 ;; rainbow-mode
 ;; (autoload 'rainbow-mode "rainbow-mode" nil t)
 
-;; smart-compile
 (use-package smart-compile
   :bind ([C-f7] . smart-compile))
 
@@ -157,7 +151,6 @@
 ;;           '(lambda ()
 ;;              (ignore-errors (symon-mode 1))))
 
-;; treemacs
 (use-package treemacs
   :commands (treemacs)
   :hook (window-setup-hook . treemacs))

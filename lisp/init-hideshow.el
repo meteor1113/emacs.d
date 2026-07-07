@@ -13,6 +13,7 @@
 
 ;;; Code:
 
+;; TODO: treesit-fold
 ;; hideshow
 (defvar hs--overlay-keymap nil "keymap for folding overlay")
 
