@@ -21,8 +21,9 @@
 (eval-after-load "vc-svn"
   '(require 'psvn nil 'noerror))
 
-;; magit
-;; (autoload 'magit-status "magit" nil t)
+(use-package magit
+  :bind (("\C-x g" . magit-status))
+  )
 
 (provide 'init-vc)
 

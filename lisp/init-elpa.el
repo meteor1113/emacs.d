@@ -151,10 +151,6 @@
 ;;           '(lambda ()
 ;;              (ignore-errors (symon-mode 1))))
 
-(use-package treemacs
-  :commands (treemacs)
-  :hook (window-setup-hook . treemacs))
-
 ;; undo-tree
 ;; (autoload 'undo-tree-mode "undo-tree" nil t)
 ;; (autoload 'global-undo-tree-mode "undo-tree" nil t)

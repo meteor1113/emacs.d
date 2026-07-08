@@ -13,22 +13,21 @@
 
 ;;; Code:
 
-(let ((root-dir (file-name-directory (or load-file-name buffer-file-name))))
+(let* ((root-dir (file-name-directory (or load-file-name buffer-file-name)))
+       (lisp-dirs '("lisp" "site-lisp"))
+       (bin-dirs '("bin"))
+       (path-eparator (if (eq system-type 'windows-nt) ";" ":")))
   ;; load-path
-  (let ((lisp-dirs (list (expand-file-name "lisp" root-dir)
-                         (expand-file-name "site-lisp" root-dir))))
-    (mapc (lambda (dir)
-            (add-to-list 'load-path dir)
-            (let ((default-directory dir))
-              (ignore-errors (normal-top-level-add-subdirs-to-load-path))))
-          (mapcar 'expand-file-name lisp-dirs)))
+  (mapc (lambda (full-dir)
+          (add-to-list 'load-path full-dir)
+          (let ((default-directory full-dir))
+            (ignore-errors (normal-top-level-add-subdirs-to-load-path))))
+        (mapcar (lambda (dir) (expand-file-name dir root-dir)) lisp-dirs))
 
   ;; exec-path
-  (let ((path-eparator (if (eq system-type 'windows-nt) ";" ":"))
-        (bin-dirs (list (expand-file-name "bin" root-dir))))
-    (dolist (dir (mapcar 'expand-file-name bin-dirs))
-      (setenv "PATH" (concat dir path-eparator (getenv "PATH")))
-      (add-to-list 'exec-path dir 'append)))
+  (dolist (full-dir (mapcar (lambda (dir) (expand-file-name dir root-dir)) bin-dirs))
+    (setenv "PATH" (concat full-dir path-eparator (getenv "PATH")))
+    (add-to-list 'exec-path full-dir 'append))
   )
 
 ;; (require 'init-custom nil 'noerror)
@@ -56,6 +55,7 @@
 ;; (require 'init-server nil 'noerror)
 (require 'init-tabbar nil 'noerror)
 (require 'init-toolbar nil 'noerror)
+(require 'init-treemacs nil 'noerror)
 (require 'init-vc nil 'noerror)
 (require 'init-yasnippet nil 'noerror)
 
