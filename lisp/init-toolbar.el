@@ -7,7 +7,7 @@
 ;;
 ;; @file
 ;; @author Liu Xin <meteor1113@qq.com>
-;; @URL https://github.com/meteor1113/dotemacs
+;; @URL https://github.com/meteor1113/emacs.d
 
 ;;; Commentary:
 
@@ -367,7 +367,7 @@
      ["Next Track" emms-next (fboundp 'emms-next)])
 
     ("Misc"
-     ["find-dotemacs-file" find-dotemacs-file (fboundp 'find-dotemacs-file)]
+     ["find-user-init-file" find-user-init-file (fboundp 'find-user-init-file)]
      ["multi-term" multi-term (fboundp 'multi-term)]
      ["cfw:open-org-calendar" cfw:open-org-calendar (fboundp 'cfw:open-org-calendar)]
      ["format-cxx-directory" format-cxx-directory (fboundp 'format-cxx-directory)]

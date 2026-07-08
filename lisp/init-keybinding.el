@@ -7,7 +7,7 @@
 ;;
 ;; @file
 ;; @author Liu Xin <meteor1113@qq.com>
-;; @URL http://git.oschina.net/meteor1113/dotemacs
+;; @URL http://git.oschina.net/meteor1113/emacs.d
 
 ;;; Commentary:
 
@@ -134,10 +134,10 @@
          (grep-dir-format
           (cond ((eq system-type 'aix)
                  "grep -inrH '%s' . \
-| grep -vE \"\.svn/|\.git/|\.hg/|\.bzr/|CVS/\"")
+| grep -vE \"\.svn/|\.git/|\.hg/|\.bzr/|CVS/|elpa/\"")
                 (t
                  "grep --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg \
---exclude-dir=.bzr --exclude-dir=CVS -inrHI '%s' .")))
+--exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=elpa -inrHI '%s' .")))
          (cmd (format grep-dir-format word)))
     (grep-apply-setting 'grep-use-null-device nil)
     (if (or prompt (= (length word) 0))
@@ -215,16 +215,16 @@ Like eclipse's Ctrl+Alt+F."
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun find-dotemacs-file ()
-  "Open .emacs file"
+(defun find-user-init-file ()
+  "Open user-init-file"
   (interactive)
   (let* ((paths '("~/.emacs" "~/.emacs.el" "~/.emacs.d/init.el" "~/_emacs"))
-         (dotemacs-path))
+         (file-path))
     (dolist (path paths)
-      (and (not dotemacs-path)
+      (and (not file-path)
            (file-exists-p path)
-           (setq dotemacs-path path)))
-    (find-file (or dotemacs-path
+           (setq file-path path)))
+    (find-file (or file-path
                    (locate-file "site-start.el" load-path)
                    "~/.emacs"))))
 
