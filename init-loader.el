@@ -42,7 +42,7 @@
 (require 'init-calendar nil 'noerror)
 (require 'init-cedet nil 'noerror)
 ;; (require 'init-company nil 'noerror)
-(require 'init-corfu nil 'noerror)
+(require 'init-completion nil 'noerror)
 (require 'init-dired nil 'noerror)
 (require 'init-ecb nil 'noerror)
 (require 'init-emms nil 'noerror)

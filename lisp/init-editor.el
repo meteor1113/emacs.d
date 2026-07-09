@@ -116,14 +116,15 @@
 
 (icomplete-mode t)
 
-(setq ido-use-filename-at-point 'guess
-      ido-use-url-at-point t)
-(ido-mode t)
+;; (setq ido-use-filename-at-point 'guess
+;;       ido-use-url-at-point t)
+;; (ido-mode t)
 ;; (ido-everywhere t)                    ; For GUI
+;; (fido-mode t)                           ; replace by vertico
 
 ;; (setq ffap-require-prefix t
 ;;       dired-at-point-require-prefix t)
-;; (ffap-bindings)                         ; Use ido to call ffap
+(ffap-bindings)
 
 (show-paren-mode t)
 ;; (setq show-paren-style 'expression)
@@ -185,7 +186,7 @@
 (setq desktop-not-loaded-hook (quote (desktop-save-mode-off)))
 (and (fboundp 'desktop-save-mode)
      (not (daemonp))
-     (desktop-save-mode (if window-system 1 -1)))
+     (desktop-save-mode 1))
 
 (eval-after-load "filecache"
   '(progn (file-cache-add-directory-list load-path)))
