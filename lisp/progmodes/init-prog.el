@@ -22,32 +22,22 @@
              ;; (set (make-local-variable 'whitespace-style) (append whitespace-style '(lines-tail)))
              (setq whitespace-style (remq 'space-mark whitespace-style))
              (ignore-errors (whitespace-mode t))
-             ;; (when window-system (ignore-errors (fci-mode 1)))
-             (if (fboundp 'display-line-numbers-mode)
-                 (display-line-numbers-mode 1)
-               (linum-mode 1))
              ;; (or (ignore-errors (hideshowvis-minor-mode t)) (hs-minor-mode t))
              (hs-minor-mode t)
              (ignore-errors (imenu-add-menubar-index))))
 
-;; ggtags
-(when (executable-find "global")
-  (add-hook 'prog-mode-hook
-            '(lambda ()
-               (ggtags-mode 1))))
+(defun my/make-executable-on-save ()
+  (let ((file-name (buffer-file-name)))
+    (when (and file-name
+               (save-excursion
+                 (save-restriction
+                   (widen)
+                   (goto-char (point-min))
+                   (looking-at "^#!")))
+               (not (file-executable-p file-name)))
+      (executable-make-executable file-name))))
 
-(when (executable-find "chmod")
-  (add-hook 'after-save-hook
-            '(lambda ()
-               (and (save-excursion
-                      (save-restriction
-                        (widen)
-                        (goto-char (point-min))
-                        (save-match-data
-                          (looking-at "^#!"))))
-                    (not (file-executable-p buffer-file-name))
-                    (shell-command (format "chmod +x '%s'" buffer-file-name))
-                    (kill-buffer "*Shell Command Output*")))))
+(add-hook 'after-save-hook #'my/make-executable-on-save)
 
 (provide 'init-prog)
 

@@ -15,12 +15,14 @@
 
 ;;; Code:
 
+;; https://github.com/minad/consult
 (use-package consult
   :bind
   (("C-s" . consult-line)
    ("C-x b" . consult-buffer))
   )
 
+;; https://github.com/minad/vertico
 (use-package vertico
   :config
   (vertico-mode 1)
@@ -28,19 +30,31 @@
         '((consult-line buffer)
           (consult-grep buffer))))
 
+;; https://github.com/oantolin/orderless
 (use-package orderless
   :custom
   (completion-styles '(orderless partial-completion)))
 
+;; https://github.com/minad/marginalia
 (use-package marginalia
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
   :init
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
   (marginalia-mode))
 
+;; https://github.com/minad/corfu
 (use-package corfu
   ;; :ensure t
   :init
+  ;; Recommended: Enable Corfu globally.  Recommended since many modes provide
+  ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
+  ;; variable `global-corfu-modes' to exclude certain modes.
   (global-corfu-mode)
   (corfu-history-mode)
   (corfu-popupinfo-mode)
@@ -49,6 +63,7 @@
   ;; (corfu-auto-deply 0.2)
   )
 
+;; https://codeberg.org/akib/emacs-corfu-terminal
 (use-package corfu-terminal
   :after corfu
   :if (not (display-graphic-p))
@@ -56,6 +71,7 @@
   (corfu-terminal-mode 1)
   )
 
+;; https://github.com/minad/cape
 (use-package cape
   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
   ;; Press C-c p ? to for help.
