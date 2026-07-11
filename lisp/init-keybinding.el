@@ -61,8 +61,8 @@
 (global-set-key [f16] 'previous-error)  ; S-f4
 
 (global-set-key (kbd "C-w") 'kill-current-buffer)
-(global-set-key [C-f4] 'kill-this-buffer)
-(global-set-key (kbd "ESC <f4>") 'kill-this-buffer) ; putty
+(global-set-key [C-f4] 'kill-current-buffer)
+(global-set-key (kbd "ESC <f4>") 'kill-current-buffer) ; putty
 (global-set-key (kbd "C-S-t") 'undo-kill-buffer)
 
 (global-set-key [f6] 'grep-current-dir)
@@ -108,7 +108,8 @@
   (global-set-key (kbd "<s-left>") 'move-beginning-of-line)
   (global-set-key (kbd "<s-right>") 'move-end-of-line)
   (global-set-key (kbd "<s-up>") 'beginning-of-buffer)
-  (global-set-key (kbd "<s-down>") 'end-of-buffer))
+  (global-set-key (kbd "<s-down>") 'end-of-buffer)
+  (global-set-key (kbd "M-w") 'kill-current-buffer))
 
 (when (eq system-type 'aix)
   (global-set-key (kbd "C-d") 'backward-delete-char-untabify)
