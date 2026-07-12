@@ -13,23 +13,28 @@
 
 ;;; Code:
 
-;; go-mode
-(add-hook 'go-mode-hook
-          '(lambda ()
-             (add-hook 'before-save-hook #'gofmt-before-save)
-             (local-set-key (kbd "M-.") #'godef-jump)
-             (local-set-key (kbd "M-,") #'pop-tag-mark)))
+(use-package go-mode
+  :hook (go-mode . (lambda ()
+                     (add-hook 'before-save-hook #'gofmt-before-save nil t)))
+  :config
+  )
+;; ;; go-mode
+;; (add-hook 'go-mode-hook
+;;           '(lambda ()
+;;              (add-hook 'before-save-hook #'gofmt-before-save)
+;;              (local-set-key (kbd "M-.") #'godef-jump)
+;;              (local-set-key (kbd "M-,") #'pop-tag-mark)))
 
-;; go-doc
-(add-hook 'go-mode-hook 'go-eldoc-setup)
+;; ;; go-doc
+;; (add-hook 'go-mode-hook 'go-eldoc-setup)
 
-;; go-snippets
+;; ;; go-snippets
 
-;; go-autocomplete
-(add-hook 'go-mode-hook
-          '(lambda ()
-             (when (require 'go-autocomplete nil 'noerror)
-               (local-set-key (kbd "M-n") 'ac-complete-go))))
+;; ;; go-autocomplete
+;; (add-hook 'go-mode-hook
+;;           '(lambda ()
+;;              (when (require 'go-autocomplete nil 'noerror)
+;;                (local-set-key (kbd "M-n") 'ac-complete-go))))
 
 (provide 'init-go)
 
