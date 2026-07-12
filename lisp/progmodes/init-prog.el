@@ -22,8 +22,6 @@
              ;; (set (make-local-variable 'whitespace-style) (append whitespace-style '(lines-tail)))
              (setq whitespace-style (remq 'space-mark whitespace-style))
              (ignore-errors (whitespace-mode t))
-             ;; (or (ignore-errors (hideshowvis-minor-mode t)) (hs-minor-mode t))
-             (hs-minor-mode t)
              (ignore-errors (imenu-add-menubar-index))))
 
 (defun my/make-executable-on-save ()
@@ -36,7 +34,6 @@
                    (looking-at "^#!")))
                (not (file-executable-p file-name)))
       (executable-make-executable file-name))))
-
 (add-hook 'after-save-hook #'my/make-executable-on-save)
 
 (provide 'init-prog)

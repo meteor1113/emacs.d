@@ -13,7 +13,6 @@
 
 ;;; Code:
 
-;; TODO: treesit-fold
 ;; hideshow
 (defvar hs--overlay-keymap nil "keymap for folding overlay")
 
@@ -26,7 +25,7 @@
         (when (eq 'code (overlay-get ov 'hs))
           (overlay-put ov 'display
                        (propertize
-                        (format "...<%d lines>"
+                        (format " ... <%d>"
                                 (count-lines (overlay-start ov)
                                              (overlay-end ov)))
                         'face 'mode-line))
@@ -40,19 +39,33 @@
           (define-key hs-minor-mode-map (kbd "<left-fringe> <mouse-2>")
             'hs-mouse-toggle-hiding)))
 
+(add-hook 'prog-mode-hook
+          '(lambda ()
+             (hs-minor-mode t)))
+
 ;; (global-set-key (kbd "C-?") 'hs-minor-mode)
 
-;; hideshowvis (so slow)
-;; (autoload 'hideshowvis-enable "hideshowvis" "Highlight foldable regions" t)
-
-(defadvice display-code-line-counts (after overlay-key-map (ov) activate)
-  (overlay-put ov 'keymap hs--overlay-keymap)
-  (overlay-put ov 'pointer 'hand))
-
-;; (add-hook 'after-init-hook
-;;           '(lambda ()
-;;              (ignore-errors (hideshowvis-symbols))))
-
+;; hideshowvis (slow?)
+(use-package hideshowvis
+  :hook (prog-mode . hideshowvis-enable)
+  :config
+  (hideshowvis-symbols)
+  (defun my/hideshowvis-add-click-behavior (ov)
+    (when (and (overlayp ov) (eq (overlay-get ov 'hs) 'code))
+      (let* ((after (overlay-get ov 'after-string))
+             (count-str (if (stringp after) after ""))
+             (display-str (propertize (format " ... <%s>" count-str) 'face 'hideshowvis-hidden-region-face))
+             )
+        (overlay-put ov 'display display-str)
+        (overlay-put ov 'pointer 'hand)
+        ;; (overlay-put ov 'mouse-face 'highlight)
+        (overlay-put ov 'help-echo "mouse-1: show hidden text")
+        (overlay-put ov 'keymap hs--overlay-keymap)
+        (overlay-put ov 'after-string nil)
+        )))
+  (advice-add 'hideshowvis-display-code-line-counts
+              :after #'my/hideshowvis-add-click-behavior)
+  )
 
 (provide 'init-hideshow)
 
