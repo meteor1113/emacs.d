@@ -16,16 +16,7 @@
 ;; emacs-lisp-mode
 (add-hook 'emacs-lisp-mode-hook
           '(lambda ()
-             ;; (ignore-errors (whitespace-mode t))
              (turn-on-eldoc-mode)))
-
-;; hl-defined
-(autoload 'hdefd-highlight-mode "hl-defined" nil t)
-(add-hook 'emacs-lisp-mode-hook
-          '(lambda ()
-             (when (require 'hl-defined nil 'noerror)
-               (hdefd-highlight-mode 1)))
-          'APPEND)
 
 (provide 'init-emacs-lisp)
 

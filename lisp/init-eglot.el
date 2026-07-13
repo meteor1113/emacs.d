@@ -18,13 +18,13 @@
   :defer t
   :hook ((python-mode . eglot-ensure)
          (go-mode . eglot-ensure)
-         (rust-mode . eglot-ensure)
          (c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
          (js-mode . eglot-ensure)
          (js2-mode . eglot-ensure)
          (typescript-mode . eglot-ensure)
          (sh-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
          (java-mode . eglot-ensure))
   :bind (:map eglot-mode-map
               ("C-c e r" . eglot-rename)
@@ -38,14 +38,7 @@
         eglot-autoshutdown t
         eglot-events-buffer-size 0
         eglot-extend-to-xref t)
-
-  ;; Language-server tweaks for common stacks.
-  (setq-default eglot-workspace-configuration
-                '((:gopls . ((staticcheck . t)
-                             (gofumpt . t)
-                             (usePlaceholders . t)))
-                  (:rust-analyzer . ((checkOnSave . (:command "clippy")))))))
-
+  )
 
 (provide 'init-eglot)
 

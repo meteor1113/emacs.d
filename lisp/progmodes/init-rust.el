@@ -13,27 +13,10 @@
 
 ;;; Code:
 
-;; rust-mode
-
-;; rustfmt
-(add-hook 'rust-mode-hook #'rustfmt-enable-on-save)
-(eval-after-load "rust-mode"
-  '(progn
-     (define-key rust-mode-map (kbd "C-c C-f") #'rustfmt-format-buffer)
-     (define-key rust-mode-map [M-f8] #'rustfmt-format-buffer)))
-
-;; cargo
-(add-hook 'rust-mode-hook #'cargo-minor-mode)
-
-;; racer
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-
-;; ac-racer
-(add-hook 'racer-mode-hook
-          '(lambda ()
-             (ac-racer-setup)
-             (local-set-key (kbd "M-n") 'ac-complete-racer)))
+(use-package rust-mode
+  :custom
+  (rust-format-on-save t)
+  )
 
 (provide 'init-rust)
 

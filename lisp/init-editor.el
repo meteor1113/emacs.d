@@ -144,16 +144,13 @@
 ;; (global-hl-line-mode 1)                 ; (if window-system 1 -1)
 ;; (global-highlight-changes-mode t)       ; use cedet instead
 
+(with-eval-after-load 'whitespace
+  (dolist (item '(tabs spaces lines indentation space-mark))
+    (setq whitespace-style (remq item whitespace-style)))
+  (defun whitespace-post-command-hook ()
+    "Hack whitespace, it's very slow in c++-mode."))
 ;; (setq whitespace-line-column 120)
-(setq whitespace-style '(face trailing newline empty))
-(when window-system
-  (setq whitespace-style
-        (append whitespace-style
-                '(tabs space-before-tab space-after-tab indentation space-mark tab-mark newline-mark))))
 ;; (global-whitespace-mode t)
-(eval-after-load "whitespace"
-  `(defun whitespace-post-command-hook ()
-     "Hack whitespace, it's very slow in c++-mode."))
 
 (which-function-mode t)
 ;; (global-cwarn-mode 1)
