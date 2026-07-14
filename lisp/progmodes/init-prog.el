@@ -13,14 +13,14 @@
 
 ;;; Code:
 
-;; prog-mode
-(add-hook 'prog-mode-hook
-          '(lambda ()
-             (setq indent-tabs-mode nil)
-             (ignore-errors (whitespace-mode t))
-             (ignore-errors (imenu-add-menubar-index))))
+(defun init-prog--setup ()
+  "Apply common defaults for programming buffers."
+  (setq indent-tabs-mode nil)
+  (ignore-errors (whitespace-mode t))
+  (ignore-errors (imenu-add-menubar-index)))
 
-(defun my/make-executable-on-save ()
+(defun init-prog--make-executable-on-save ()
+  "Make current file executable when it starts with a shebang."
   (let ((file-name (buffer-file-name)))
     (when (and file-name
                (save-excursion
@@ -30,7 +30,10 @@
                    (looking-at "^#!")))
                (not (file-executable-p file-name)))
       (executable-make-executable file-name))))
-(add-hook 'after-save-hook #'my/make-executable-on-save)
+
+(use-package emacs
+  :hook ((prog-mode . init-prog--setup)
+         (after-save . init-prog--make-executable-on-save)))
 
 (provide 'init-prog)
 

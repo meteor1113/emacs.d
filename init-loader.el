@@ -67,7 +67,6 @@
 (require 'init-emacs-lisp nil 'noerror)
 (require 'init-gdb nil 'noerror)
 (require 'init-go nil 'noerror)
-(require 'init-haskell nil 'noerror)
 (require 'init-java nil 'noerror)
 (require 'init-javascript nil 'noerror)
 (require 'init-perl nil 'noerror)

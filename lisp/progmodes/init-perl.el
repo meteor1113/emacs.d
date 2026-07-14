@@ -13,22 +13,18 @@
 
 ;;; Code:
 
-;; perl-mode
-;; (add-hook 'perl-mode-hook
-;;           '(lambda ()
-;;              (ignore-errors (whitespace-mode t))))
+;; (defun init-perl--setup ()
+;;    "Apply local cperl preferences."
+;;    (cperl-set-style "PerlStyle")
+;;    (setq cperl-continued-brace-offset -4)
+;;    (abbrev-mode t))
 
-;; cperl-mode
-(add-to-list 'auto-mode-alist
-             '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
-(add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
-(add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
-(add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
-(add-hook 'cperl-mode-hook
-          '(lambda ()
-             (cperl-set-style "PerlStyle")
-             (setq cperl-continued-brace-offset -4)
-             (abbrev-mode t)))
+;; (use-package cperl-mode
+;;    :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode)
+;;    :interpreter (("perl" . cperl-mode)
+;;                         ("perl5" . cperl-mode)
+;;                         ("miniperl" . cperl-mode))
+;;    :hook (cperl-mode . init-perl--setup))
 
 (provide 'init-perl)
 

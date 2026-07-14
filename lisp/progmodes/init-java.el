@@ -13,16 +13,21 @@
 
 ;;; Code:
 
-;; java-mode
-(add-hook 'java-mode-hook
-          '(lambda ()
-             (c-set-style "java")))
+;; (defun init-java--setup-style ()
+;;    "Apply Java coding style for java-mode buffers."
+;;    (c-set-style "java"))
 
-;; jde
-(add-hook 'java-mode-hook
-          '(lambda ()
-             (when (require 'jde nil 'noerror)
-               (setq jde-enable-abbrev-mode t))))
+;; (defun init-java--setup-jde ()
+;;    "Enable JDE abbrev mode when JDE is available."
+;;    (when (require 'jde nil 'noerror)
+;;       (setq jde-enable-abbrev-mode t)))
+
+;; (use-package cc-mode
+;;    :hook (java-mode . init-java--setup-style))
+
+;; (use-package jde
+;;    :defer t
+;;    :hook (java-mode . init-java--setup-jde))
 
 (provide 'init-java)
 

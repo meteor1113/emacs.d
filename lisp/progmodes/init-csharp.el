@@ -13,14 +13,10 @@
 
 ;;; Code:
 
-;; csharp-mode
-;; (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
-;; (setq auto-mode-alist
-;;       (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
-(add-hook 'csharp-mode-hook
-          '(lambda ()
-             ;; (setq imenu-generic-expression cc-imenu-java-generic-expression)
-             (c-set-style "C#"))) ; c-set-style maybe fail when start csharp-mode
+;; (use-package csharp-mode
+;;   :hook (csharp-mode . (lambda ()
+;;                          ;; (setq imenu-generic-expression cc-imenu-java-generic-expression)
+;;                          (ignore-errors (c-set-style "C#")))))
 
 (provide 'init-csharp)
 

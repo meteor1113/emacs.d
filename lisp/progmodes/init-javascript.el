@@ -13,13 +13,15 @@
 
 ;;; Code:
 
-;; js2-mode
-;; (autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(setq js2-strict-missing-semi-warning nil)
-(eval-after-load 'js2-mode
-  '(progn
-     (ignore-errors (js2-imenu-extras-setup))))
+;; (defun init-javascript--setup-imenu ()
+;;   "Enable js2 imenu extras when available."
+;;   (ignore-errors (js2-imenu-extras-setup)))
+
+;; (use-package js2-mode
+;;   :mode ("\\.js\\'" . js2-mode)
+;;   :custom
+;;   (js2-strict-missing-semi-warning nil)
+;;   :hook (js2-mode . init-javascript--setup-imenu))
 
 (provide 'init-javascript)
 

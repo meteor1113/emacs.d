@@ -72,8 +72,8 @@
         (when proc (set-process-query-on-exit-flag proc nil)))
       (kill-buffer (gdb-get-buffer buffer)))))
 
-(defadvice gdb (before ecb-deactivate activate)
-  "if ecb activated, deactivate it."
+(defun init-gdb--deactivate-ecb-before-gdb (&rest _args)
+  "If ECB is enabled, disable it before starting gdb."
   (when (and (boundp 'ecb-minor-mode) ecb-minor-mode)
     (ecb-deactivate)))
 
@@ -89,39 +89,50 @@
 ;;                                   (gud-tooltip-mode -1))))))))
 ;; (add-hook 'gdb-mode-hook 'gdb-tooltip-hook)
 
-(add-hook 'gdb-mode-hook
-          '(lambda ()
-             (gud-tooltip-mode 1)))
+(defun init-gdb--enable-tooltip ()
+  "Enable tooltip support for gud in gdb buffers."
+  (gud-tooltip-mode 1))
 
-(defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
-  "After gdb killed, disable gud-tooltip-mode."
+(defun init-gdb--disable-tooltip-after-kill (&rest _args)
+  "Disable gud tooltip mode after gdb is terminated."
   (gud-tooltip-mode -1))
 
-(setq gdb-many-windows t)
-(setq gdb-use-separate-io-buffer t)
-;; (gud-tooltip-mode t)
-(eval-after-load "cc-mode"
-  '(progn
-     (define-key c-mode-base-map [f5] 'gdb)))
+(defun init-gdb--gud-go-or-kill (&optional kill)
+  "Continue program, or kill gdb when prefix argument KILL is non-nil."
+  (interactive "P")
+  (if kill (gud-kill) (gud-go)))
 
-(eval-after-load "gud"
-  '(progn
-     (define-key gud-minor-mode-map [f5]
-       '(lambda (&optional kill)
-          (interactive "P")
-          (if kill (gud-kill) (gud-go))))
-     (define-key gud-minor-mode-map [S-f5] 'gud-kill)
-     (define-key gud-minor-mode-map [f17] 'gud-kill) ; S-f5
-     (define-key gud-minor-mode-map [f8] 'gud-print)
-     (define-key gud-minor-mode-map [C-f8] 'gud-pstar)
-     (define-key gud-minor-mode-map [f9] 'gud-break-or-remove)
-     (define-key gud-minor-mode-map [C-f9] 'gud-enable-or-disable)
-     (define-key gud-minor-mode-map [S-f9] 'gud-watch)
-     (define-key gud-minor-mode-map [f10] 'gud-next)
-     (define-key gud-minor-mode-map [C-f10] 'gud-until)
-     (define-key gud-minor-mode-map [C-S-f10] 'gud-jump)
-     (define-key gud-minor-mode-map [f11] 'gud-step)
-     (define-key gud-minor-mode-map [C-f11] 'gud-finish)))
+(advice-add 'gdb :before #'init-gdb--deactivate-ecb-before-gdb)
+(advice-add 'gud-kill-buffer-hook :after #'init-gdb--disable-tooltip-after-kill)
+
+(use-package gdb-mi
+  :defer t
+  :hook (gdb-mode . init-gdb--enable-tooltip)
+  :custom
+  (gdb-many-windows t)
+  (gdb-use-separate-io-buffer t))
+
+(use-package cc-mode
+  :defer t
+  :config
+  (define-key c-mode-base-map [f5] 'gdb))
+
+(use-package gud
+  :defer t
+  :config
+  (define-key gud-minor-mode-map [f5] #'init-gdb--gud-go-or-kill)
+  (define-key gud-minor-mode-map [S-f5] 'gud-kill)
+  (define-key gud-minor-mode-map [f17] 'gud-kill) ; S-f5
+  (define-key gud-minor-mode-map [f8] 'gud-print)
+  (define-key gud-minor-mode-map [C-f8] 'gud-pstar)
+  (define-key gud-minor-mode-map [f9] 'gud-break-or-remove)
+  (define-key gud-minor-mode-map [C-f9] 'gud-enable-or-disable)
+  (define-key gud-minor-mode-map [S-f9] 'gud-watch)
+  (define-key gud-minor-mode-map [f10] 'gud-next)
+  (define-key gud-minor-mode-map [C-f10] 'gud-until)
+  (define-key gud-minor-mode-map [C-S-f10] 'gud-jump)
+  (define-key gud-minor-mode-map [f11] 'gud-step)
+  (define-key gud-minor-mode-map [C-f11] 'gud-finish))
 
 (provide 'init-gdb)
 

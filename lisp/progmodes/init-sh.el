@@ -13,14 +13,9 @@
 
 ;;; Code:
 
-;; sh-mode
-;; (add-hook 'sh-mode-hook
-;;           '(lambda ()
-;;              (ignore-errors (whitespace-mode t))))
-
-;; shell-mode
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on t)
+(use-package ansi-color
+  :defer t
+  :hook (shell-mode . ansi-color-for-comint-mode-on))
 
 (provide 'init-sh)
 

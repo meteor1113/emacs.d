@@ -13,10 +13,8 @@
 
 ;;; Code:
 
-;; emacs-lisp-mode
-(add-hook 'emacs-lisp-mode-hook
-          '(lambda ()
-             (turn-on-eldoc-mode)))
+(use-package emacs
+   :hook (emacs-lisp-mode . turn-on-eldoc-mode))
 
 (provide 'init-emacs-lisp)
 

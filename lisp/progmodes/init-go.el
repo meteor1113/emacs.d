@@ -16,7 +16,6 @@
 (use-package go-mode
   :hook (go-mode . (lambda ()
                      (add-hook 'before-save-hook #'gofmt-before-save nil t)))
-  :config
   )
 
 (provide 'init-go)

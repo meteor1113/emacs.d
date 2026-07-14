@@ -13,12 +13,10 @@
 
 ;;; Code:
 
-;; php-mode
-;; (autoload 'php-mode "php-mode" nil t)
-;; (add-to-list 'auto-mode-alist
-;;              '("\\.php[34]?\\'\\|\\.phtml\\'" . php-mode))
-;; (add-to-list 'auto-mode-alist '("\\.module\\'" . php-mode))
-;; (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
+(use-package php-mode
+  :mode (("\\.php[34]?\\'\\|\\.phtml\\'" . php-mode)
+         ("\\.module\\'" . php-mode)
+         ("\\.inc\\'" . php-mode)))
 
 (provide 'init-php)
 
