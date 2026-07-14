@@ -121,31 +121,15 @@
 (advice-add 'nyan-mode :after #'init-nyan-animation)
 ;; (ignore-errors (and window-system (nyan-mode t)))
 
-;; TODO: build-in project
-;; projectile
-;; (autoload 'projectile-mode "projectile" nil t)
-;; (autoload 'projectile-global-mode "projectile" nil t)
-(add-hook 'after-init-hook
-          (lambda ()
-            (ignore-errors (projectile-global-mode 1))))
-;; (run-with-idle-timer 3 nil #'projectile-global-mode 1)
+(use-package projectile
+  :config
+  (projectile-mode 1))
 
 ;; rainbow-mode
 ;; (autoload 'rainbow-mode "rainbow-mode" nil t)
 
 (use-package smart-compile
   :bind ([C-f7] . smart-compile))
-
-;; TODO: vertico + orderless
-;; smex
-(add-hook 'after-init-hook
-          ;; (run-with-idle-timer 2 nil
-          (lambda ()
-            (when (ignore-errors (smex-initialize))
-              (global-set-key (kbd "M-x") 'smex)
-              (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-              ;; This is your old M-x.
-              (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))))
 
 ;; symon
 ;; (add-hook 'after-init-hook

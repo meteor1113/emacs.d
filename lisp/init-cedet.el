@@ -68,12 +68,6 @@
       (require 'semantic-c nil 'noerror))
     (ignore-errors (semantic-gcc-setup)))
 
-  ;; (unless (executable-find "python")
-  ;;   (remove-hook 'python-mode-hook 'wisent-python-default-setup)
-  ;;   (setq semantic-new-buffer-setup-functions
-  ;;         (delete (assq 'python-mode semantic-new-buffer-setup-functions)
-  ;;                 semantic-new-buffer-setup-functions)))
-
   (advice-add 'push-mark :around #'init-cedet-push-mark-semantic)
   (global-set-key [f12] 'semantic-ia-fast-jump-or-back)
   (global-set-key [C-f12] 'semantic-ia-fast-jump-or-back)

@@ -16,11 +16,6 @@
 ;; change-log-mode
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
 
-;; psvn
-;; (autoload 'svn-status "psvn" nil t)
-(with-eval-after-load "vc-svn"
-  (require 'psvn nil 'noerror))
-
 (use-package magit
   :bind (("\C-x g" . magit-status))
   )

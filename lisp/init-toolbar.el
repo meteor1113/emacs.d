@@ -255,10 +255,6 @@
       :style toggle :selected global-hl-line-mode]
      ["iimage-mode" iimage-mode :active (fboundp 'iimage-mode)
       :style toggle :selected iimage-mode]
-     ["linum-mode" linum-mode :active (fboundp 'linum-mode)
-      :style toggle :selected linum-mode]
-     ["linum-mode (global)" global-linum-mode :active (fboundp 'global-linum-mode)
-      :style toggle :selected global-linum-mode]
      ["minimap-mode" minimap-mode :active (fboundp 'minimap-mode)
       :style toggle :selected minimap-mode]
      ["nyan-mode" nyan-mode :active (fboundp 'nyan-mode)
@@ -467,17 +463,11 @@
                    :enable '(not (truncated-partial-width-window-p))
                    :button '(:radio . (and (null truncate-lines) (not word-wrap)))
                    :help (concat "Wrap" (key4cmd 'toggle-truncate-lines)))
-(if (fboundp 'display-line-numbers-mode)
-    (tool-bar-add-item "linum" 'display-line-numbers-mode 'display-line-numbers-mode
-                       :visible 'toolbarshow-view
-                       :enable '(fboundp 'display-line-numbers-mode)
-                       :button '(:toggle . display-line-numbers-mode)
-                       :help (concat "Display line numbers" (key4cmd 'display-line-numbers-mode)))
-  (tool-bar-add-item "linum" 'linum-mode 'linum-mode
-                     :visible 'toolbarshow-view
-                     :enable '(fboundp 'linum-mode)
-                     :button '(:toggle . linum-mode)
-                     :help (concat "Linum" (key4cmd 'linum-mode))))
+(tool-bar-add-item "linum" 'global-display-line-numbers-mode 'global-display-line-numbers-mode
+                   :visible 'toolbarshow-view
+                   :enable '(fboundp 'global-display-line-numbers-mode)
+                   :button '(:toggle . global-display-line-numbers-mode)
+                   :help (concat "Display line numbers" (key4cmd 'global-display-line-numbers-mode)))
 (tool-bar-add-item "whitespace" 'whitespace-mode 'whitespace-mode
                    :visible 'toolbarshow-view
                    :enable '(fboundp 'whitespace-mode)
