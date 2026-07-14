@@ -14,35 +14,30 @@
 ;;; Code:
 
 ;; org
-(setq org-log-done 'time)
-(setq org-export-with-archived-trees t)
-(setq org-startup-truncated nil)
-(setq org-src-fontify-natively t)
+(defun init-org--setup ()
+  (setq comment-start nil)
+  (setq indent-tabs-mode nil)
+  ;; (when (fboundp 'whitespace-mode)
+  ;;   (whitespace-mode 1))
+  ;; (auto-fill-mode t)
+  (imenu-add-menubar-index)
+  (when (featurep 'yasnippet)
+    (let ((original-command (lookup-key org-mode-map [tab])))
+      (setq yas-fallback-behavior `(apply ,original-command))
+      (local-set-key [tab] 'yas-expand))))
 
-(add-hook 'org-mode-hook
-          '(lambda ()
-             (setq comment-start nil)
-             (setq indent-tabs-mode nil)
-             ;; (when (fboundp 'whitespace-mode)
-             ;;   (whitespace-mode 1))
-             ;; (auto-fill-mode t)
-             (imenu-add-menubar-index)))
-
-(eval-after-load "org"
-  `(progn
-     (define-key org-mode-map [(control tab)] nil)
-     (define-key org-mode-map (kbd "<C-S-iso-lefttab>")
-       'org-force-cycle-archived)
-     (define-key org-mode-map (kbd "<C-S-tab>") 'org-force-cycle-archived)))
-
-(eval-after-load "org"
-  '(eval-after-load "yasnippet"
-     '(add-hook 'org-mode-hook
-                (let ((original-command (lookup-key org-mode-map [tab])))
-                  `(lambda ()
-                     (setq yas-fallback-behavior
-                           '(apply ,original-command))
-                     (local-set-key [tab] 'yas-expand))))))
+(use-package org
+  :custom
+  (org-log-done 'time)
+  (org-export-with-archived-trees t)
+  (org-startup-truncated nil)
+  (org-src-fontify-natively t)
+  :hook (org-mode . init-org--setup)
+  :bind
+  (:map org-mode-map
+        ([C-tab] . nil)
+        ("<C-S-iso-lefttab>" . org-force-cycle-archived)
+        ("<C-S-tab>" . org-force-cycle-archived)))
 
 (provide 'init-org)
 

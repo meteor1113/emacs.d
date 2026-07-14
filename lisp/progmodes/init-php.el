@@ -14,9 +14,7 @@
 ;;; Code:
 
 (use-package php-mode
-  :mode (("\\.php[34]?\\'\\|\\.phtml\\'" . php-mode)
-         ("\\.module\\'" . php-mode)
-         ("\\.inc\\'" . php-mode)))
+  )
 
 (provide 'init-php)
 

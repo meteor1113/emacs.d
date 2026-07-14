@@ -368,10 +368,6 @@
 
     ("Misc"
      ["find-user-init-file" find-user-init-file (fboundp 'find-user-init-file)]
-     ["multi-term" multi-term (fboundp 'multi-term)]
-     ["cfw:open-org-calendar" cfw:open-org-calendar (fboundp 'cfw:open-org-calendar)]
-     ["format-cxx-directory" format-cxx-directory (fboundp 'format-cxx-directory)]
-     ["format-xml-directory" format-xml-directory (fboundp 'format-xml-directory)]
      ["ielm" ielm (fboundp 'ielm)]
      ["proced" proced (fboundp 'proced)]
      ["ascii-table" ascii-table (fboundp 'ascii-table)])))

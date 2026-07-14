@@ -77,7 +77,6 @@
 (require 'init-sql nil 'noerror)
 
 ;; textmodes
-(require 'init-artist nil 'noerror)
 (require 'init-org nil 'noerror)
 (require 'init-text nil 'noerror)
 (require 'init-xml nil 'noerror)
