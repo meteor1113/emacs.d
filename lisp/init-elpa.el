@@ -20,11 +20,10 @@
 ;; (setq package--init-file-ensured t)     ; Prevent package--ensure-init-file
 ;; (setq use-package-always-defer t)
 
-(eval-after-load "package"
-  '(progn
-     ;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-     ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))))
+(with-eval-after-load "package"
+  ;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+  ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/")))
 ;; (setq package-archives '(("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
 ;;                          ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
 ;;                          ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
@@ -114,10 +113,12 @@
 (autoload 'nyan-stop-animation "nyan-mode" nil t)
 ;; (setq nyan-wavy-trail t)
 (setq nyan-bar-length 8)
-(defadvice nyan-mode (after animation activate)
+(defun init-nyan-animation (&rest _)
   (if nyan-mode
       (nyan-start-animation)
     (nyan-stop-animation)))
+
+(advice-add 'nyan-mode :after #'init-nyan-animation)
 ;; (ignore-errors (and window-system (nyan-mode t)))
 
 ;; TODO: build-in project
@@ -125,8 +126,8 @@
 ;; (autoload 'projectile-mode "projectile" nil t)
 ;; (autoload 'projectile-global-mode "projectile" nil t)
 (add-hook 'after-init-hook
-          '(lambda ()
-             (ignore-errors (projectile-global-mode 1))))
+          (lambda ()
+            (ignore-errors (projectile-global-mode 1))))
 ;; (run-with-idle-timer 3 nil #'projectile-global-mode 1)
 
 ;; rainbow-mode
@@ -139,12 +140,12 @@
 ;; smex
 (add-hook 'after-init-hook
           ;; (run-with-idle-timer 2 nil
-          #'(lambda ()
-              (when (ignore-errors (smex-initialize))
-                (global-set-key (kbd "M-x") 'smex)
-                (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-                ;; This is your old M-x.
-                (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))))
+          (lambda ()
+            (when (ignore-errors (smex-initialize))
+              (global-set-key (kbd "M-x") 'smex)
+              (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+              ;; This is your old M-x.
+              (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))))
 
 ;; symon
 ;; (add-hook 'after-init-hook
@@ -161,8 +162,8 @@
 ;; TODO: winum / ace-window
 ;; window-numbering
 (add-hook 'after-init-hook
-          '(lambda ()
-             (ignore-errors (window-numbering-mode 1))))
+          (lambda ()
+            (ignore-errors (window-numbering-mode 1))))
 ;; (run-with-idle-timer 3 nil #'window-numbering-mode 1)
 
 ;; TODO: windmove / ace-window

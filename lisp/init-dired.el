@@ -21,29 +21,30 @@
 ;;             (define-key dired-mode-map (kbd "^")
 ;;               (lambda () (interactive) (find-alternate-file "..")))))
 
-(defadvice dired-find-file (around dired-find-file-single-buffer activate)
+(defun init-dired-find-file-single-buffer (orig-fun &rest args)
   "Replace current buffer if file is a directory."
-  (interactive)
   (let ((orig (current-buffer))
         (filename (dired-get-file-for-visit)))
-    ad-do-it
+    (apply orig-fun args)
     (when (and (file-directory-p filename)
                (not (eq (current-buffer) orig)))
       (kill-buffer orig))))
 
-(defadvice dired-up-directory (around dired-up-directory-single-buffer activate)
+(defun init-dired-up-directory-single-buffer (orig-fun &rest args)
   "Replace current buffer if file is a directory."
-  (interactive)
   (let ((orig (current-buffer)))
-    ad-do-it
+    (apply orig-fun args)
     (kill-buffer orig)))
+
+(advice-add 'dired-find-file :around #'init-dired-find-file-single-buffer)
+(advice-add 'dired-up-directory :around #'init-dired-up-directory-single-buffer)
 
 ;; dired+
 (when window-system
-  (eval-after-load "dired"
-    '(when (require 'dired+ nil 'noerror)
-       (define-key dired-mode-map [mouse-2] 'diredp-mouse-find-file)
-       (diredp-toggle-find-file-reuse-dir 1))))
+  (with-eval-after-load "dired"
+    (when (require 'dired+ nil 'noerror)
+      (define-key dired-mode-map [mouse-2] 'diredp-mouse-find-file)
+      (diredp-toggle-find-file-reuse-dir 1))))
 
 (provide 'init-dired)
 

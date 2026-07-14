@@ -30,14 +30,10 @@
     (add-to-list 'exec-path full-dir 'append))
   )
 
-;; (require 'init-custom nil 'noerror)
-;; (require 'init-path nil 'noerror)
 (require 'init-editor nil 'noerror)
 (require 'init-keybinding nil 'noerror)
 (require 'init-elpa nil 'noerror)
 
-;; (require 'init-auto-complete nil 'noerror) ; TODO: corfu + lsp
-;; (require 'init-auto-insert nil 'noerror)
 (require 'init-bm nil 'noerror)
 (require 'init-calendar nil 'noerror)
 (require 'init-cedet nil 'noerror)
@@ -48,11 +44,8 @@
 (require 'init-eglot nil 'noerror)
 (require 'init-emms nil 'noerror)
 (require 'init-flycheck nil 'noerror)
-;; (require 'init-font nil 'noerror)
-;; (require 'init-helm nil 'noerror)
 (require 'init-hideshow nil 'noerror)
 (require 'init-highlight nil 'noerror)
-(require 'init-leim nil 'noerror)
 ;; (require 'init-server nil 'noerror)
 (require 'init-tabbar nil 'noerror)
 (require 'init-toolbar nil 'noerror)

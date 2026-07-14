@@ -16,11 +16,10 @@
 ;; emms
 (autoload 'emms "emms-playlist-mode" nil t)
 
-(eval-after-load "emms-playlist-mode"
-  '(progn
-     (define-key emms-playlist-mode-map (kbd "SPC") 'emms-pause)
-     (define-key emms-playlist-mode-map [double-mouse-1]
-       'emms-playlist-mode-play-current-track)))
+(with-eval-after-load "emms-playlist-mode"
+  (define-key emms-playlist-mode-map (kbd "SPC") 'emms-pause)
+  (define-key emms-playlist-mode-map [double-mouse-1]
+    'emms-playlist-mode-play-current-track))
 
 (defun init-emms ()
   "Initial emms."
@@ -62,11 +61,11 @@
         (emms-playlist-mode-go))
     (message "Initial emms failed.")))
 
-(defadvice emms (before init-emms activate)
+(defun init-emms-before-emms (&rest _)
   "Initial emms first."
   (init-emms))
 
-(defadvice emms-history-save (around delete-empty-history activate)
+(defun init-emms-history-save-delete-empty (orig-fun &rest args)
   "If have not emms playlist, delete emms-history-file."
   (let (have-playlist)
     (dolist (buf (emms-playlist-buffer-list))
@@ -76,7 +75,10 @@
         (when (file-exists-p emms-history-file)
           (delete-file emms-history-file))
       (ignore-errors (make-directory (file-name-directory emms-history-file)))
-      ad-do-it)))
+      (apply orig-fun args))))
+
+(advice-add 'emms :before #'init-emms-before-emms)
+(advice-add 'emms-history-save :around #'init-emms-history-save-delete-empty)
 
 ;; (when (and window-system
 ;;            (require 'emms-history nil t)

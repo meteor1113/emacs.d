@@ -36,15 +36,19 @@
             (overlay-put overlay prop t))
           (goto-char (match-end 0)))))))
 
-(defadvice mouse-start-end (after hl-double-click (start end mode) activate)
-  (cond ((= mode 1)
-         (highlight-text nil 'hl-double-click 'hl-double-click)
-         (let* ((txt (buffer-substring-no-properties (nth 0 ad-return-value)
-                                                     (nth 1 ad-return-value)))
-                (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
-           (highlight-text regexp 'hl-double-click 'hl-double-click)))
-        ((= mode 2)
-         (highlight-text "" 'hl-double-click 'hl-double-click))))
+(defun init-highlight-mouse-start-end (orig-fun start end mode &rest args)
+  (let ((ret (apply orig-fun start end mode args)))
+    (cond ((= mode 1)
+           (highlight-text nil 'hl-double-click 'hl-double-click)
+           (let* ((txt (buffer-substring-no-properties (nth 0 ret)
+                                                       (nth 1 ret)))
+                  (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
+             (highlight-text regexp 'hl-double-click 'hl-double-click)))
+          ((= mode 2)
+           (highlight-text "" 'hl-double-click 'hl-double-click)))
+    ret))
+
+(advice-add 'mouse-start-end :around #'init-highlight-mouse-start-end)
 
 ;; (defun highlight-text-at-point ()
 ;;   (interactive)
@@ -77,12 +81,11 @@
   ;;                      (symbol-overlay-put))
   ;;                     ((= mode 2)
   ;;                      (symbol-overlay-remove-all)))))
-  (eval-after-load "pulse"
-    '(progn
-       (advice-add 'symbol-overlay-jump-next :after (lambda (&rest _) (pulse-line-hook-function)))
-       (advice-add 'symbol-overlay-jump-prev :after (lambda (&rest _) (pulse-line-hook-function)))
-       (advice-add 'symbol-overlay-switch-forward :after (lambda (&rest _) (pulse-line-hook-function)))
-       (advice-add 'symbol-overlay-switch-backward :after (lambda (&rest _) (pulse-line-hook-function)))))
+  (with-eval-after-load "pulse"
+    (advice-add 'symbol-overlay-jump-next :after (lambda (&rest _) (pulse-line-hook-function)))
+    (advice-add 'symbol-overlay-jump-prev :after (lambda (&rest _) (pulse-line-hook-function)))
+    (advice-add 'symbol-overlay-switch-forward :after (lambda (&rest _) (pulse-line-hook-function)))
+    (advice-add 'symbol-overlay-switch-backward :after (lambda (&rest _) (pulse-line-hook-function))))
   )
 
 (use-package highlight-parentheses

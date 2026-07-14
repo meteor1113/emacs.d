@@ -18,14 +18,13 @@
 ;; (autoload 'company-mode "company" nil t)
 ;; (autoload 'global-company-mode "company" nil t)
 
-(eval-after-load "company"
-  '(progn
-     (setq company-idle-delay nil)
-     ;; (setq company-idle-delay t
-     ;;       company-minimum-prefix-length 1
-     ;;       company-begin-commands '(self-insert-command c-electric-lt-gt))
-     (define-key company-mode-map (kbd "M-n") 'company-select-next)
-     (define-key company-mode-map (kbd "M-p") 'company-select-previous)))
+(with-eval-after-load "company"
+  (setq company-idle-delay nil)
+  ;; (setq company-idle-delay t
+  ;;       company-minimum-prefix-length 1
+  ;;       company-begin-commands '(self-insert-command c-electric-lt-gt))
+  (define-key company-mode-map (kbd "M-n") 'company-select-next)
+  (define-key company-mode-map (kbd "M-p") 'company-select-previous))
 
 (provide 'init-company)
 

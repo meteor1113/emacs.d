@@ -185,16 +185,18 @@
      (not (daemonp))
      (desktop-save-mode 1))
 
-(eval-after-load "filecache"
-  '(progn (file-cache-add-directory-list load-path)))
+(with-eval-after-load "filecache"
+  (file-cache-add-directory-list load-path))
 
 (setq recentf-menu-open-all-flag t
       recentf-max-saved-items 100
       recentf-max-menu-items 30)
 (recentf-mode t)
-(defadvice recentf-track-closed-file (after push-beginning activate)
+(defun init-recentf-track-closed-file (&rest _)
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
+
+(advice-add 'recentf-track-closed-file :after #'init-recentf-track-closed-file)
 
 (setq filesets-data
       '(("linux"

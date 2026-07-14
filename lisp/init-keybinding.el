@@ -15,8 +15,8 @@
 
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "M-SPC") 'set-mark-command)
-(eval-after-load "cua-base"
-  '(define-key cua-global-keymap (kbd "M-SPC") 'cua-set-mark))
+(with-eval-after-load "cua-base"
+  (define-key cua-global-keymap (kbd "M-SPC") 'cua-set-mark))
 (global-set-key (kbd "<find>") 'move-beginning-of-line) ; putty
 (global-set-key (kbd "<select>") 'move-end-of-line) ; putty
 
@@ -113,12 +113,10 @@
 
 (when (eq system-type 'aix)
   (global-set-key (kbd "C-d") 'backward-delete-char-untabify)
-  (eval-after-load "cc-mode"
-    '(progn
-       (define-key c-mode-base-map "\C-d" 'c-electric-backspace)))
-  (eval-after-load "comint"
-    '(progn
-       (define-key comint-mode-map "\C-d" 'delete-backward-char))))
+  (with-eval-after-load "cc-mode"
+    (define-key c-mode-base-map "\C-d" 'c-electric-backspace))
+  (with-eval-after-load "comint"
+    (define-key comint-mode-map "\C-d" 'delete-backward-char)))
 
 (autoload 'grep-tag-default "grep")
 (autoload 'grep-apply-setting "grep")

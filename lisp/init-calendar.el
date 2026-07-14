@@ -44,16 +44,16 @@
   ;; (run-with-idle-timer 2 nil #'appt-activate 1))
 
 ;; cal-china-x
-(eval-after-load "calendar"
-  '(when (require 'cal-china-x nil 'noerror)
-     (setq cal-china-x-priority1-holidays
-           (append holiday-local-holidays
-                   cal-china-x-chinese-holidays
-                   cal-china-x-japanese-holidays))
-     (setq calendar-holidays
-           (append calendar-holidays
-                   cal-china-x-chinese-holidays
-                   cal-china-x-japanese-holidays))))
+(with-eval-after-load "calendar"
+  (when (require 'cal-china-x nil 'noerror)
+    (setq cal-china-x-priority1-holidays
+      (append holiday-local-holidays
+      cal-china-x-chinese-holidays
+      cal-china-x-japanese-holidays))
+    (setq calendar-holidays
+      (append calendar-holidays
+      cal-china-x-chinese-holidays
+      cal-china-x-japanese-holidays))))
 
 (provide 'init-calendar)
 

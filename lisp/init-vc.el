@@ -18,8 +18,8 @@
 
 ;; psvn
 ;; (autoload 'svn-status "psvn" nil t)
-(eval-after-load "vc-svn"
-  '(require 'psvn nil 'noerror))
+(with-eval-after-load "vc-svn"
+  (require 'psvn nil 'noerror))
 
 (use-package magit
   :bind (("\C-x g" . magit-status))

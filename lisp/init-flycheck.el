@@ -18,16 +18,15 @@
 ;;           '(lambda ()
 ;;              (ignore-errors (global-flycheck-mode t))))
 
-(eval-after-load "flycheck"
-  '(progn
-     (define-key flycheck-mode-map (kbd "C-c <f4>") 'flycheck-next-error)
-     (define-key flycheck-mode-map (kbd "C-c <S-f4>") 'flycheck-previous-error)
-     (define-key flycheck-mode-map (kbd "C-c <C-f4>") 'flycheck-list-errors)))
+(with-eval-after-load "flycheck"
+  (define-key flycheck-mode-map (kbd "C-c <f4>") 'flycheck-next-error)
+  (define-key flycheck-mode-map (kbd "C-c <S-f4>") 'flycheck-previous-error)
+  (define-key flycheck-mode-map (kbd "C-c <C-f4>") 'flycheck-list-errors))
 
 ;; flycheck-rust
 (add-hook 'flycheck-mode-hook
-          #'(lambda ()
-              (ignore-errors (flycheck-rust-setup))))
+          (lambda ()
+            (ignore-errors (flycheck-rust-setup))))
 
 (provide 'init-flycheck)
 

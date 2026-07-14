@@ -33,15 +33,15 @@
           (overlay-put ov 'keymap hs--overlay-keymap)
           (overlay-put ov 'pointer 'hand))))
 
-(eval-after-load "hideshow"
-  '(progn (define-key hs-minor-mode-map [(shift mouse-2)] nil)
-          (define-key hs-minor-mode-map (kbd "C-+") 'hs-toggle-hiding)
-          (define-key hs-minor-mode-map (kbd "<left-fringe> <mouse-2>")
-            'hs-mouse-toggle-hiding)))
+(with-eval-after-load "hideshow"
+  (define-key hs-minor-mode-map [(shift mouse-2)] nil)
+  (define-key hs-minor-mode-map (kbd "C-+") 'hs-toggle-hiding)
+  (define-key hs-minor-mode-map (kbd "<left-fringe> <mouse-2>")
+    'hs-mouse-toggle-hiding))
 
 (add-hook 'prog-mode-hook
-          '(lambda ()
-             (hs-minor-mode t)))
+          (lambda ()
+            (hs-minor-mode t)))
 
 ;; (global-set-key (kbd "C-?") 'hs-minor-mode)
 

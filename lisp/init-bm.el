@@ -33,20 +33,21 @@
 
   (add-hook 'after-init-hook 'bm-repository-load)
   (add-hook 'kill-buffer-hook #'bm-buffer-save)
-  (add-hook 'kill-emacs-hook #'(lambda nil
-                                 (bm-buffer-save-all)
-                                 (bm-repository-save)))
+  (add-hook 'kill-emacs-hook
+            (lambda ()
+              (bm-buffer-save-all)
+              (bm-repository-save)))
   (add-hook 'after-save-hook #'bm-buffer-save)
   (add-hook 'find-file-hooks #'bm-buffer-restore)
   (add-hook 'after-revert-hook #'bm-buffer-restore)
   (add-hook 'vc-before-checkin-hook #'bm-buffer-save)
 
-  (eval-after-load "pulse"
-    '(progn
-       (advice-add 'bm-next :after #'pulse-line-hook-function)
-       (advice-add 'bm-previous :after #'pulse-line-hook-function)
-       (advice-add 'bm-next-mouse :after #'pulse-line-hook-function)
-       (advice-add 'bm-previous-mouse :after #'pulse-line-hook-function)))
+  (with-eval-after-load "pulse"
+    (advice-add 'bm-toggle :after #'pulse-line-hook-function)
+    (advice-add 'bm-next :after #'pulse-line-hook-function)
+    (advice-add 'bm-previous :after #'pulse-line-hook-function)
+    (advice-add 'bm-next-mouse :after #'pulse-line-hook-function)
+    (advice-add 'bm-previous-mouse :after #'pulse-line-hook-function))
 
   :bind
   (("C-<f2>" . bm-toggle)
