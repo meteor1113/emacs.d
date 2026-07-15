@@ -152,7 +152,8 @@
 ;; (setq whitespace-line-column 120)
 ;; (global-whitespace-mode t)
 
-(which-function-mode t)
+;; (which-function-mode t)
+(add-hook 'prog-mode-hook #'which-func-mode)
 ;; (global-cwarn-mode 1)
 (global-auto-revert-mode t)
 (setq compilation-auto-jump-to-first-error t)

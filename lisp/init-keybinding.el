@@ -65,6 +65,7 @@
 (global-set-key (kbd "ESC <f4>") 'kill-current-buffer) ; putty
 (global-set-key (kbd "C-S-t") 'undo-kill-buffer)
 
+;; TODO: ripgrep
 (global-set-key [f6] 'grep-current-dir)
 (global-set-key [C-f6] 'moccur-all-buffers)
 (global-set-key [M-f6] 'grep-todo-current-dir)

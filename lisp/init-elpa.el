@@ -55,10 +55,10 @@
   :bind ("C-c SPC" . ace-jump-mode)
   :config (set-face-background 'ace-jump-face-foreground "yellow"))
 
-;; aggressive-indent
-;; (add-hook 'after-init-hook
-;;           '(lambda ()
-;;              (ignore-errors (global-aggressive-indent-mode 1))))
+(use-package aggressive-indent
+  :config
+  (global-aggressive-indent-mode 1)
+  (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package anzu
   :demand t
@@ -76,65 +76,34 @@
 (use-package ascii-table
   :commands (ascii-table))
 
-;; ;; drag-stuff
-;; ;; (autoload 'drag-stuff-global-mode "drag-stuff" "Toggle Drag-Stuff mode." t)
-;; (add-hook 'after-init-hook
-;;           '(lambda ()
-;;              (ignore-errors (drag-stuff-global-mode t))))
-;; ;; (run-with-idle-timer 3 nil #'drag-stuff-global-mode t)
-
 (use-package editorconfig
   :demand t
   :config (editorconfig-mode 1))
 
-;; TODO: multiple-cursors
-;; mark-multiple
-;; (require 'inline-string-rectangle)
-;; (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
-;; (require 'mark-more-like-this)
-;; (autoload 'mark-previous-like-this "mark-more-like-this" nil t)
-;; (autoload 'mark-next-like-this "mark-more-like-this" nil t)
-;; (autoload 'mark-more-like-this "mark-more-like-this" nil t)
-;; (autoload 'mark-all-like-this "mark-more-like-this" nil t)
-(global-set-key (kbd "C-<") 'mark-previous-like-this)
-(global-set-key (kbd "C->") 'mark-next-like-this)
-(global-set-key (kbd "C-M-m") 'mark-more-like-this)
-(global-set-key (kbd "C-*") 'mark-all-like-this)
-
-;; ;; minimap
-;; (setq minimap-window-location 'right)
-
 ;; multi-term
 ;; (autoload 'multi-term "multi-term" nil t)
-
-;; nyan-mode
-;; (autoload 'nyan-mode "nyan-mode" nil t)
-(autoload 'nyan-start-animation "nyan-mode" nil t)
-(autoload 'nyan-stop-animation "nyan-mode" nil t)
-;; (setq nyan-wavy-trail t)
-(setq nyan-bar-length 8)
-(defun init-nyan-animation (&rest _)
-  (if nyan-mode
-      (nyan-start-animation)
-    (nyan-stop-animation)))
-
-(advice-add 'nyan-mode :after #'init-nyan-animation)
-;; (ignore-errors (and window-system (nyan-mode t)))
 
 (use-package projectile
   :config
   (projectile-mode 1))
 
-;; rainbow-mode
-;; (autoload 'rainbow-mode "rainbow-mode" nil t)
+(use-package colorful-mode
+  ;; :diminish
+  :custom
+  (colorful-use-prefix t)
+  (colorful-only-strings 'only-prog)
+  (css-fontify-colors nil)
+  :config
+  (global-colorful-mode t)
+  (add-to-list 'global-colorful-modes 'helpful-mode))
 
 (use-package smart-compile
   :bind ([C-f7] . smart-compile))
 
-;; symon
-;; (add-hook 'after-init-hook
-;;           '(lambda ()
-;;              (ignore-errors (symon-mode 1))))
+(use-package symon
+  :config
+  (setq symon-delay 2)
+  (symon-mode 1))
 
 ;; undo-tree
 ;; (autoload 'undo-tree-mode "undo-tree" nil t)
