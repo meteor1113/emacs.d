@@ -105,14 +105,10 @@
 
 (ignore-errors (transient-mark-mode t))
 
-(if (fboundp 'cua-mode)
-    (progn
-      (setq cua-rectangle-mark-key [C-M-return])
-      (cua-mode t)
-      (setq cua-keep-region-after-copy t))
-  (when (fboundp 'pc-selection-mode)
-    (setq pc-select-selection-keys-only t)
-    (pc-selection-mode)))
+(setq cua-rectangle-mark-key [C-M-return])
+(setq cua-keep-region-after-copy t)
+(setq cua-remap-control-z nil)          ; undo-fu
+(cua-mode t)
 
 (icomplete-mode t)
 
@@ -152,8 +148,7 @@
 ;; (setq whitespace-line-column 120)
 ;; (global-whitespace-mode t)
 
-;; (which-function-mode t)
-(add-hook 'prog-mode-hook #'which-func-mode)
+(which-function-mode t)
 ;; (global-cwarn-mode 1)
 (global-auto-revert-mode t)
 (setq compilation-auto-jump-to-first-error t)

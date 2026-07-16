@@ -76,17 +76,6 @@
 (use-package ascii-table
   :commands (ascii-table))
 
-(use-package editorconfig
-  :demand t
-  :config (editorconfig-mode 1))
-
-;; multi-term
-;; (autoload 'multi-term "multi-term" nil t)
-
-(use-package projectile
-  :config
-  (projectile-mode 1))
-
 (use-package colorful-mode
   ;; :diminish
   :custom
@@ -97,6 +86,17 @@
   (global-colorful-mode t)
   (add-to-list 'global-colorful-modes 'helpful-mode))
 
+(use-package editorconfig
+  :demand t
+  :config (editorconfig-mode 1))
+
+;; (use-package multi-term
+;;   :commands (multi-term))
+
+(use-package projectile
+  :config
+  (projectile-mode 1))
+
 (use-package smart-compile
   :bind ([C-f7] . smart-compile))
 
@@ -105,12 +105,16 @@
   (setq symon-delay 2)
   (symon-mode 1))
 
-;; undo-tree
-;; (autoload 'undo-tree-mode "undo-tree" nil t)
-;; (autoload 'global-undo-tree-mode "undo-tree" nil t)
+(use-package undo-fu
+  :config
+  (global-unset-key (kbd "C-z"))
+  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
+  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
 
-;; vlf
-;; (autoload 'vlf "vlf" "View a Large File in Emacs." t)
+(use-package vlf
+  :commands (vlf)
+  :init
+  (require 'vlf-setup))
 
 ;; TODO: winum / ace-window
 ;; window-numbering
