@@ -39,12 +39,7 @@
 (advice-add 'dired-find-file :around #'init-dired-find-file-single-buffer)
 (advice-add 'dired-up-directory :around #'init-dired-up-directory-single-buffer)
 
-;; dired+
-(when window-system
-  (with-eval-after-load "dired"
-    (when (require 'dired+ nil 'noerror)
-      (define-key dired-mode-map [mouse-2] 'diredp-mouse-find-file)
-      (diredp-toggle-find-file-reuse-dir 1))))
+;; dirvish
 
 (provide 'init-dired)
 

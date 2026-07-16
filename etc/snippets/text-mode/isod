@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : current date(YYYY-MM-DD)
-#condition: 'force-in-comment
-# --
-`(format-time-string "%Y-%m-%d")`

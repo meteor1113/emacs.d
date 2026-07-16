@@ -1,6 +1,0 @@
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : method (main)
-# --
-public static void main(String[] args) {
-    $0
-}

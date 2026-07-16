@@ -93,6 +93,8 @@
   ;; ...
   )
 
+;; yasnippet + yasnippet-snippets + consult-yasnippet
+
 (provide 'init-completion)
 
 ;;; init-completion.el ends here

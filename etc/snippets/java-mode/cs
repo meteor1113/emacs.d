@@ -1,6 +1,0 @@
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : case
-# --
-case ${constexpr}:
-    $0
-    break;

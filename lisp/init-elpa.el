@@ -33,11 +33,11 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(defun compile-all-packages ()
-  "Byte-compile all installed packages."
-  (interactive)
-  (dolist (elt package-alist)
-    (package--compile (car (cdr elt)))))
+;; (defun compile-all-packages ()
+;;   "Byte-compile all installed packages."
+;;   (interactive)
+;;   (dolist (elt package-alist)
+;;     (package--compile (car (cdr elt)))))
 
 (use-package auto-package-update
   :ensure t
@@ -103,7 +103,8 @@
 (use-package symon
   :config
   (setq symon-delay 2)
-  (symon-mode 1))
+  ;; (symon-mode 1)
+  )
 
 (use-package undo-fu
   :config
@@ -115,24 +116,6 @@
   :commands (vlf)
   :init
   (require 'vlf-setup))
-
-;; TODO: winum / ace-window
-;; window-numbering
-(add-hook 'after-init-hook
-          (lambda ()
-            (ignore-errors (window-numbering-mode 1))))
-;; (run-with-idle-timer 3 nil #'window-numbering-mode 1)
-
-;; TODO: windmove / ace-window
-;; win-switch
-;; (autoload 'win-switch-dispatch "win-switch" nil t)
-;; (global-set-key "\C-xo" 'win-switch-dispatch)
-(global-set-key "\C-xo"
-                (lambda ()
-                  (interactive)
-                  (if (require 'win-switch nil 'noerror)
-                      (win-switch-dispatch)
-                    (other-window 1))))
 
 (provide 'init-elpa)
 

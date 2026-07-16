@@ -219,64 +219,34 @@
       :style toggle :selected artist-mode]
      ["anzu-mode (global)" global-anzu-mode :active (fboundp 'global-anzu-mode)
       :style toggle :selected global-anzu-mode]
-     ["auto-complete-mode (global)" global-auto-complete-mode :active (fboundp 'global-auto-complete-mode)
-      :style toggle :selected global-auto-complete-mode]
      ["diff-hl-mode (global)" global-diff-hl-mode :active (fboundp 'global-diff-hl-mode)
       :style toggle :selected global-diff-hl-mode]
      ["display-line-numbers-mode" display-line-numbers-mode :active (fboundp 'display-line-numbers-mode)
       :style toggle :selected display-line-numbers-mode]
      ["display-line-numbers-mode (global)" global-display-line-numbers-mode :active (fboundp 'global-display-line-numbers-mode)
       :style toggle :selected global-display-line-numbers-mode]
-     ["drag-stuff-mode (global)" drag-stuff-global-mode :active (fboundp 'drag-stuff-global-mode)
-      :style toggle :selected drag-stuff-global-mode]
      ["electric-pair-mode" electric-pair-mode :active (fboundp 'electric-pair-mode)
       :style toggle :selected electric-pair-mode]
-     ["fci-mode" fci-mode :active (fboundp 'fci-mode)
-      :style toggle :selected fci-mode]
-     ["fci-mode (global)" global-fci-mode :active (fboundp 'global-fci-mode)
-      :style toggle :selected global-fci-mode]
      ["flycheck-mode" flycheck-mode :active (fboundp 'flycheck-mode)
       :style toggle :selected flycheck-mode]
      ["flycheck-mode (global)" global-flycheck-mode :active (fboundp 'global-flycheck-mode)
       :style toggle :selected global-flycheck-mode]
      ["goto-address-mode" goto-address-mode :active (fboundp 'goto-address-mode)
       :style toggle :selected goto-address-mode]
-     ["helm-mode" helm-mode :active (fboundp 'helm-mode)
-      :style toggle :selected helm-mode]
      ["hideshowvis-minor-mode" hideshowvis-minor-mode :active (fboundp 'hideshowvis-minor-mode)
       :style toggle :selected hideshowvis-minor-mode]
      ["highlight-parentheses-mode" highlight-parentheses-mode :active (fboundp 'highlight-parentheses-mode)
       :style toggle :selected highlight-parentheses-mode]
-     ["highlight-symbol-mode" highlight-symbol-mode :active (fboundp 'highlight-symbol-mode)
-      :style toggle :selected highlight-symbol-mode]
-     ["highlight-tail-mode" highlight-tail-mode :active (fboundp 'highlight-tail-mode)
-      :style toggle :selected highlight-tail-mode]
      ["hl-line-mode (global)" global-hl-line-mode :active (fboundp 'global-hl-line-mode)
       :style toggle :selected global-hl-line-mode]
      ["iimage-mode" iimage-mode :active (fboundp 'iimage-mode)
       :style toggle :selected iimage-mode]
-     ["minimap-mode" minimap-mode :active (fboundp 'minimap-mode)
-      :style toggle :selected minimap-mode]
-     ["nyan-mode" nyan-mode :active (fboundp 'nyan-mode)
-      :style toggle :selected nyan-mode]
      ["outline-minor-mode" outline-minor-mode :active (fboundp 'outline-minor-mode)
       :style toggle :selected outline-minor-mode]
-     ["projectile-mode" projectile-mode :active (fboundp 'projectile-mode)
-      :style toggle :selected projectile-mode]
-     ["projectile-mode (global)" projectile-global-mode :active (fboundp 'projectile-global-mode)
-      :style toggle :selected projectile-global-mode]
-     ["rainbow-mode" rainbow-mode :active (fboundp 'rainbow-mode)
-      :style toggle :selected rainbow-mode]
      ["ruler-mode" ruler-mode :active (fboundp 'ruler-mode)
       :style toggle :selected ruler-mode]
      ["symon-mode" symon-mode :active (fboundp 'symon-mode)
       :style toggle :selected symon-mode]
-     ["tabbar-mode" tabbar-mode :active (fboundp 'tabbar-mode)
-      :style toggle :selected tabbar-mode]
-     ["undo-tree-mode" undo-tree-mode :active (fboundp 'undo-tree-mode)
-      :style toggle :selected undo-tree-mode]
-     ["undo-tree-mode (global)" global-undo-tree-mode :active (fboundp 'global-undo-tree-mode)
-      :style toggle :selected global-undo-tree-mode]
      ["view-mode" view-mode :active (fboundp 'view-mode)
       :style toggle :selected view-mode]
      ["volatile-highlights-mode" volatile-highlights-mode :active (fboundp 'volatile-highlights-mode)

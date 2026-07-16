@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : current time(ISO 8601 format)
-#condition: 'force-in-comment
-# --
-`(format-time-string "%Y-%m-%dT%T%z")`

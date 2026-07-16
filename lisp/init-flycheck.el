@@ -13,20 +13,12 @@
 
 ;;; Code:
 
-;; flycheck
-;; (add-hook 'after-init-hook
-;;           '(lambda ()
-;;              (ignore-errors (global-flycheck-mode t))))
-
-(with-eval-after-load "flycheck"
-  (define-key flycheck-mode-map (kbd "C-c <f4>") 'flycheck-next-error)
-  (define-key flycheck-mode-map (kbd "C-c <S-f4>") 'flycheck-previous-error)
-  (define-key flycheck-mode-map (kbd "C-c <C-f4>") 'flycheck-list-errors))
-
-;; flycheck-rust
-(add-hook 'flycheck-mode-hook
-          (lambda ()
-            (ignore-errors (flycheck-rust-setup))))
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ("C-c <f4>" . flycheck-next-error)
+              ("C-c <S-f4>" . flycheck-previous-error)
+              ("C-c <C-f4>" . flycheck-list-errors)))
 
 (provide 'init-flycheck)
 

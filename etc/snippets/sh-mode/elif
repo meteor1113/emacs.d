@@ -1,5 +1,0 @@
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : elif ...
-# --
-elif [[ ${condition} ]]; then
-    ${#statements}

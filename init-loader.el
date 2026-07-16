@@ -35,14 +35,13 @@
 (require 'init-elpa nil 'noerror)
 
 (require 'init-bm nil 'noerror)
-(require 'init-calendar nil 'noerror)
 (require 'init-cedet nil 'noerror)
 (require 'init-completion nil 'noerror)
 (require 'init-dired nil 'noerror)
 ;; (require 'init-ecb nil 'noerror)
 (require 'init-eglot nil 'noerror)
 (require 'init-emms nil 'noerror)
-(require 'init-flycheck nil 'noerror)
+;; (require 'init-flycheck nil 'noerror)
 (require 'init-hideshow nil 'noerror)
 (require 'init-highlight nil 'noerror)
 ;; (require 'init-server nil 'noerror)
@@ -50,7 +49,6 @@
 (require 'init-toolbar nil 'noerror)
 (require 'init-treemacs nil 'noerror)
 (require 'init-vc nil 'noerror)
-(require 'init-yasnippet nil 'noerror)
 
 ;; progmodes
 (require 'init-prog nil 'noerror)

@@ -1,6 +1,0 @@
-#contributor : Meteor Liu <meteor1113@gmail.com>
-#name : for ... in ... done
-# --
-for ${i} in ${words}; do
-    ${#statements}
-done
