@@ -21,7 +21,7 @@
 ;;             (define-key dired-mode-map (kbd "^")
 ;;               (lambda () (interactive) (find-alternate-file "..")))))
 
-(defun init-dired-find-file-single-buffer (orig-fun &rest args)
+(defun my/init-dired--find-file-single-buffer (orig-fun &rest args)
   "Replace current buffer if file is a directory."
   (let ((orig (current-buffer))
         (filename (dired-get-file-for-visit)))
@@ -30,14 +30,14 @@
                (not (eq (current-buffer) orig)))
       (kill-buffer orig))))
 
-(defun init-dired-up-directory-single-buffer (orig-fun &rest args)
+(defun my/init-dired--up-directory-single-buffer (orig-fun &rest args)
   "Replace current buffer if file is a directory."
   (let ((orig (current-buffer)))
     (apply orig-fun args)
     (kill-buffer orig)))
 
-(advice-add 'dired-find-file :around #'init-dired-find-file-single-buffer)
-(advice-add 'dired-up-directory :around #'init-dired-up-directory-single-buffer)
+(advice-add 'dired-find-file :around #'my/init-dired--find-file-single-buffer)
+(advice-add 'dired-up-directory :around #'my/init-dired--up-directory-single-buffer)
 
 ;; dirvish
 

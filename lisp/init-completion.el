@@ -18,8 +18,30 @@
 ;; https://github.com/minad/consult
 (use-package consult
   :bind
-  (("C-s" . consult-line)
-   ("C-x b" . consult-buffer))
+  (("C-s" . my/consult-line-with-symbol)
+   ("C-x b" . consult-buffer)
+   ("M-s l" . consult-line)
+   ("M-s r" . my/consult-ripgrep-with-symbol))
+
+  :config
+  (defun my/consult-get-text ()
+    "Get region or symbol at point."
+    (if (use-region-p)
+        (buffer-substring-no-properties (region-beginning) (region-end))
+      (thing-at-point 'symbol t)))
+
+  (defun my/consult-line-with-symbol ()
+    (interactive)
+    (consult-line (my/consult-get-text)))
+
+  (defun my/consult-ripgrep-with-symbol ()
+    (interactive)
+    (consult-ripgrep (project-root (project-current)) (my/consult-get-text)))
+
+  (defun my/consult-ripgrep-todo ()
+    (interactive)
+    (consult-ripgrep (project-root (project-current))
+                     "\\(TODO\\|BUG\\|FIXME\\|HACK\\|XXX\\|NOTE\\|OPTIMIZE\\|REVIEW\\)"))
   )
 
 ;; https://github.com/minad/vertico

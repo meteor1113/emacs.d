@@ -48,9 +48,9 @@
 ;; (global-set-key (kbd "ESC M-;") 'comment-or-uncomment-region) ; putty
 (global-set-key [(control ?.)] 'repeat)
 
-(global-set-key [M-f8] 'format-region)
-(global-set-key (kbd "ESC <f8>") 'format-region) ; putty
-(global-set-key (kbd "C-S-f") 'format-region)
+;; (global-set-key [M-f8] 'format-region)
+;; (global-set-key (kbd "ESC <f8>") 'format-region) ; putty
+;; (global-set-key (kbd "C-S-f") 'format-region)
 
 (global-set-key [f4] (lambda (&optional previous)
                        (interactive "P")
@@ -63,16 +63,7 @@
 (global-set-key (kbd "C-w") 'kill-current-buffer)
 (global-set-key [C-f4] 'kill-current-buffer)
 (global-set-key (kbd "ESC <f4>") 'kill-current-buffer) ; putty
-(global-set-key (kbd "C-S-t") 'undo-kill-buffer)
-
-;; TODO: ripgrep
-(global-set-key [f6] 'grep-current-dir)
-(global-set-key [C-f6] 'moccur-all-buffers)
-(global-set-key [M-f6] 'grep-todo-current-dir)
-;; (lambda () (interactive) (grep-current-dir nil "TODO|FIXME")))
-(global-set-key (kbd "ESC <f6>") (key-binding [M-f6]))
-(global-set-key [C-M-f6] 'moccur-todo-all-buffers)
-(global-set-key (kbd "ESC <C-f6>") (key-binding [C-M-f6]))
+(global-set-key (kbd "C-S-t") 'my/undo-kill-buffer)
 
 (global-set-key [f7] 'compile)
 
@@ -119,87 +110,29 @@
   (with-eval-after-load "comint"
     (define-key comint-mode-map "\C-d" 'delete-backward-char)))
 
-(autoload 'grep-tag-default "grep")
-(autoload 'grep-apply-setting "grep")
+;; (defun my/format-region ()
+;;   "Format region, if no region actived, format current buffer.
+;; Like eclipse's Ctrl+Alt+F."
+;;   (interactive)
+;;   (let ((start (point-min))
+;;         (end (point-max)))
+;;     (if (and (fboundp 'region-active-p) (region-active-p))
+;;         (progn (setq start (region-beginning))
+;;                (setq end (region-end)))
+;;       (progn (when (fboundp 'whitespace-cleanup)
+;;                (whitespace-cleanup))
+;;              (setq end (point-max))))
+;;     (save-excursion
+;;       (save-restriction
+;;         (narrow-to-region (point-min) end)
+;;         (push-mark (point))
+;;         (push-mark (point-max) nil t)
+;;         (goto-char start)
+;;         (ignore-errors (whitespace-cleanup))
+;;         (untabify start (point-max))
+;;         (indent-region start (point-max) nil)))))
 
-(defun grep-current-dir (&optional prompt wd)
-  "Run `grep' to find current word in current directory."
-  (interactive "P")
-  (let* ((word (or wd
-                   (and (fboundp 'region-active-p)
-                        (region-active-p)
-                        (buffer-substring-no-properties (region-beginning)
-                                                        (region-end)))
-                   (grep-tag-default)))
-         (grep-dir-format
-          (cond ((eq system-type 'aix)
-                 "grep -inrH '%s' . \
-| grep -vE \"\.svn/|\.git/|\.hg/|\.bzr/|CVS/|elpa/\"")
-                (t
-                 "grep --exclude-dir=.svn --exclude-dir=.git --exclude-dir=.hg \
---exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=elpa -inrHI '%s' .")))
-         (cmd (format grep-dir-format word)))
-    (grep-apply-setting 'grep-use-null-device nil)
-    (if (or prompt (= (length word) 0))
-        (grep (read-shell-command
-               "Run grep (like this): " cmd 'grep-history))
-      (if (= 0 (length word))
-          (message "Word is blank.")
-        (grep cmd)))))
-
-(defun grep-todo-current-dir ()
-  "Run `grep' to find 'TODO' in current directory."
-  (interactive)
-  (grep-current-dir nil "TODO|FIXME"))
-
-(defun moccur-word-all-buffers (regexp)
-  "Run `multi-occur' to find regexp in all buffers."
-  (if (= 0 (length regexp))
-      (message "Regexp is blank.")
-    (let ((buffers (buffer-list)))
-      (dolist (buffer buffers)
-        (let ((pos (string-match " *\\*" (buffer-name buffer))))
-          (when (and pos (= 0 pos))
-            (setq buffers (remq buffer buffers)))))
-      (multi-occur buffers regexp))))
-
-(defun moccur-all-buffers (&optional prompt)
-  "Run `multi-occur' to find current word in all buffers."
-  (interactive "P")
-  (let ((word (grep-tag-default)))
-    (when (or prompt (= (length word) 0))
-      (setq word (read-regexp "List lines matching regexp" word)))
-    (moccur-word-all-buffers word)))
-
-(defun moccur-todo-all-buffers ()
-  "Run `multi-occur' to find 'TODO' in all buffers."
-  (interactive)
-  (moccur-word-all-buffers
-   "\\<\\([Tt][Oo][Dd][Oo]\\|[Ff][Ii][Xx][Mm][Ee]\\)\\>"))
-
-(defun format-region ()
-  "Format region, if no region actived, format current buffer.
-Like eclipse's Ctrl+Alt+F."
-  (interactive)
-  (let ((start (point-min))
-        (end (point-max)))
-    (if (and (fboundp 'region-active-p) (region-active-p))
-        (progn (setq start (region-beginning))
-               (setq end (region-end)))
-      (progn (when (fboundp 'whitespace-cleanup)
-               (whitespace-cleanup))
-             (setq end (point-max))))
-    (save-excursion
-      (save-restriction
-        (narrow-to-region (point-min) end)
-        (push-mark (point))
-        (push-mark (point-max) nil t)
-        (goto-char start)
-        (ignore-errors (whitespace-cleanup))
-        (untabify start (point-max))
-        (indent-region start (point-max) nil)))))
-
-(defun undo-kill-buffer (arg)
+(defun my/undo-kill-buffer (arg)
   "Re-open the last buffer killed.  With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -215,7 +148,7 @@ Like eclipse's Ctrl+Alt+F."
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun find-user-init-file ()
+(defun my/find-user-init-file ()
   "Open user-init-file"
   (interactive)
   (let* ((paths '("~/.emacs" "~/.emacs.el" "~/.emacs.d/init.el" "~/_emacs"))

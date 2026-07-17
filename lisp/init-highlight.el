@@ -20,7 +20,7 @@
     (((class color) (background dark)) (:background "green" :foreground "black")))
   "*Face used by double click highlight.")
 
-(defun highlight-text (txt prop face)
+(defun my/highlight-text (txt prop face)
   (let ((start (point-min))
         (end (point-max)))
     (remove-overlays start end prop t)
@@ -36,31 +36,31 @@
             (overlay-put overlay prop t))
           (goto-char (match-end 0)))))))
 
-(defun init-highlight-mouse-start-end (orig-fun start end mode &rest args)
+(defun my/init-highlight--mouse-start-end (orig-fun start end mode &rest args)
   (let ((ret (apply orig-fun start end mode args)))
     (cond ((= mode 1)
-           (highlight-text nil 'hl-double-click 'hl-double-click)
+           (my/highlight-text nil 'hl-double-click 'hl-double-click)
            (let* ((txt (buffer-substring-no-properties (nth 0 ret)
                                                        (nth 1 ret)))
                   (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
-             (highlight-text regexp 'hl-double-click 'hl-double-click)))
+             (my/highlight-text regexp 'hl-double-click 'hl-double-click)))
           ((= mode 2)
-           (highlight-text "" 'hl-double-click 'hl-double-click)))
+           (my/highlight-text "" 'hl-double-click 'hl-double-click)))
     ret))
 
-(advice-add 'mouse-start-end :around #'init-highlight-mouse-start-end)
+(advice-add 'mouse-start-end :around #'my/init-highlight--mouse-start-end)
 
-;; (defun highlight-text-at-point ()
+;; (defun my/highlight-text-at-point ()
 ;;   (interactive)
-;;   (highlight-text nil 'hl-at-point 'show-paren-match)
+;;   (my/highlight-text nil 'hl-at-point 'show-paren-match)
 ;;   (let* ((target-symbol (symbol-at-point))
 ;;          (txt (symbol-name target-symbol))
 ;;          (regexp (concat "\\_<" (regexp-quote txt) "\\_>")))
 ;;     (when target-symbol
-;;       (highlight-text regexp 'hl-at-point 'show-paren-match))))
+;;       (my/highlight-text regexp 'hl-at-point 'show-paren-match))))
 
-;; (global-set-key [(meta f1)] 'highlight-text-at-point)
-;; (global-set-key (kbd "ESC <f1>") 'highlight-text-at-point)
+;; (global-set-key [(meta f1)] 'my/highlight-text-at-point)
+;; (global-set-key (kbd "ESC <f1>") 'my/highlight-text-at-point)
 
 (use-package symbol-overlay
   :hook ((prog-mode . symbol-overlay-mode))
@@ -75,7 +75,7 @@
    )
   :config
   ;; (advice-add 'mouse-start-end :after
-  ;;             (defun hl-double-click-advice (start end mode)
+  ;;             (defun my/hl-double-click-advice (start end mode)
   ;;               (cond ((= mode 1)
   ;;                      (symbol-overlay-remove-all)
   ;;                      (symbol-overlay-put))

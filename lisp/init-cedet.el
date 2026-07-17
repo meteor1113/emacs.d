@@ -27,12 +27,12 @@
 ;;              (ignore-errors (semantic-mode t))))
 ;; (run-with-idle-timer 10 nil #'semantic-mode t)
 
-(defun init-cedet-push-mark-semantic (orig-fun &rest args)
+(defun my/init-cedet--push-mark-semantic (orig-fun &rest args)
   "Push mark and add semantic bookmark entry."
   (semantic-mrub-push semantic-mru-bookmark-ring (point) 'mark)
   (apply orig-fun args))
 
-(defun semantic-ia-fast-jump-back ()
+(defun my/semantic-ia-fast-jump-back ()
   (interactive)
   (if (ring-empty-p (oref semantic-mru-bookmark-ring ring))
       (error "Semantic Bookmark ring is currently empty"))
@@ -44,10 +44,10 @@
     (semantic-mrub-visit first)
     (ring-remove ring 0)))
 
-(defun semantic-ia-fast-jump-or-back (&optional back)
+(defun my/semantic-ia-fast-jump-or-back (&optional back)
   (interactive "P")
   (if back
-      (semantic-ia-fast-jump-back)
+      (my/semantic-ia-fast-jump-back)
     (semantic-ia-fast-jump (point))))
 
 (with-eval-after-load "semantic"
@@ -68,13 +68,13 @@
       (require 'semantic-c nil 'noerror))
     (ignore-errors (semantic-gcc-setup)))
 
-  (advice-add 'push-mark :around #'init-cedet-push-mark-semantic)
-  (global-set-key [f12] 'semantic-ia-fast-jump-or-back)
-  (global-set-key [C-f12] 'semantic-ia-fast-jump-or-back)
-  (global-set-key [S-f12] 'semantic-ia-fast-jump-back)
+  (advice-add 'push-mark :around #'my/init-cedet--push-mark-semantic)
+  (global-set-key [f12] 'my/semantic-ia-fast-jump-or-back)
+  (global-set-key [C-f12] 'my/semantic-ia-fast-jump-or-back)
+  (global-set-key [S-f12] 'my/semantic-ia-fast-jump-back)
   (global-set-key [mouse-2] 'semantic-ia-fast-mouse-jump)
-  (global-set-key [S-mouse-2] 'semantic-ia-fast-jump-back)
-  (global-set-key [double-mouse-2] 'semantic-ia-fast-jump-back)
+  (global-set-key [S-mouse-2] 'my/semantic-ia-fast-jump-back)
+  (global-set-key [double-mouse-2] 'my/semantic-ia-fast-jump-back)
   (global-set-key [M-S-f12] 'semantic-analyze-proto-impl-toggle))
 
 ;; pulse
@@ -82,14 +82,14 @@
 (add-hook 'after-init-hook
           (lambda ()
             (ignore-errors (require 'pulse nil 'noerror))))
-(defun init-cedet-pulse-line-after (&rest _)
+(defun my/init-cedet--pulse-line-after (&rest _)
   (pulse-line-hook-function))
 
-(defun init-cedet-pulse-line-after-interactive (&rest _)
+(defun my/init-cedet--pulse-line-after-interactive (&rest _)
   (when (called-interactively-p 'interactive)
     (pulse-line-hook-function)))
 
-(defun init-cedet-pulse-line-after-distant-mark (&rest _)
+(defun my/init-cedet--pulse-line-after-distant-mark (&rest _)
   (when (and (called-interactively-p 'interactive)
              (> (abs (- (point) (mark))) 400))
     (pulse-line-hook-function)))
@@ -98,15 +98,15 @@
   (add-hook 'next-error-hook 'pulse-line-hook-function)
 
   (dolist (fn '(switch-to-buffer previous-buffer next-buffer ido-switch-buffer))
-    (advice-add fn :after #'init-cedet-pulse-line-after))
+    (advice-add fn :after #'my/init-cedet--pulse-line-after))
 
   (dolist (fn '(beginning-of-buffer goto-line find-tag tags-search
-                                   tags-loop-continue pop-tag-mark
-                                   imenu-default-goto-function))
-    (advice-add fn :after #'init-cedet-pulse-line-after-interactive))
+                                    tags-loop-continue pop-tag-mark
+                                    imenu-default-goto-function))
+    (advice-add fn :after #'my/init-cedet--pulse-line-after-interactive))
 
-  (advice-add 'exchange-point-and-mark :after #'init-cedet-pulse-line-after-distant-mark)
-  (advice-add 'cua-exchange-point-and-mark :after #'init-cedet-pulse-line-after-distant-mark))
+  (advice-add 'exchange-point-and-mark :after #'my/init-cedet--pulse-line-after-distant-mark)
+  (advice-add 'cua-exchange-point-and-mark :after #'my/init-cedet--pulse-line-after-distant-mark))
 
 (provide 'init-cedet)
 

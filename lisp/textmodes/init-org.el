@@ -14,7 +14,7 @@
 ;;; Code:
 
 ;; org
-(defun init-org--setup ()
+(defun my/init-org--setup ()
   (setq comment-start nil)
   (setq indent-tabs-mode nil)
   ;; (when (fboundp 'whitespace-mode)
@@ -32,7 +32,7 @@
   (org-export-with-archived-trees t)
   (org-startup-truncated nil)
   (org-src-fontify-natively t)
-  :hook (org-mode . init-org--setup)
+  :hook (org-mode . my/init-org--setup)
   :bind
   (:map org-mode-map
         ([C-tab] . nil)

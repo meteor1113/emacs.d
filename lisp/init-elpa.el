@@ -33,7 +33,7 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; (defun compile-all-packages ()
+;; (defun my/compile-all-packages ()
 ;;   "Byte-compile all installed packages."
 ;;   (interactive)
 ;;   (dolist (elt package-alist)

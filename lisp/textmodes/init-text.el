@@ -18,12 +18,12 @@
   `((nil ,"^ \\{0,4\\}\\([一二三四五六七八九十]+[、. )]\\)+ *[^,。，]+?$" 0)
     (nil ,"^ \\{0,4\\}\\([0-9]+[、. )]\\)+ *[^,。，]+?$" 0)))
 
-(defun init-text--setup ()
+(defun my/init-text--setup ()
   (setq imenu-generic-expression text-imenu-generic-expression)
   (imenu-add-menubar-index))
 
 (use-package emacs
-  :hook (text-mode . init-text--setup))
+  :hook (text-mode . my/init-text--setup))
 
 (provide 'init-text)
 

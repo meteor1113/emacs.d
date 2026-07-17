@@ -21,7 +21,7 @@
   (setq hs--overlay-keymap map))
 
 (setq hs-set-up-overlay
-      (defun my-display-code-line-counts (ov)
+      (defun my/display-code-line-counts (ov)
         (when (eq 'code (overlay-get ov 'hs))
           (overlay-put ov 'display
                        (propertize
@@ -36,8 +36,7 @@
 (with-eval-after-load "hideshow"
   (define-key hs-minor-mode-map [(shift mouse-2)] nil)
   (define-key hs-minor-mode-map (kbd "C-+") 'hs-toggle-hiding)
-  (define-key hs-minor-mode-map (kbd "<left-fringe> <mouse-2>")
-    'hs-mouse-toggle-hiding))
+  (define-key hs-minor-mode-map (kbd "<left-fringe> <mouse-2>") 'hs-mouse-toggle-hiding))
 
 (add-hook 'prog-mode-hook
           (lambda ()

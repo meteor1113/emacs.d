@@ -13,7 +13,7 @@
 
 ;;; Code:
 
-;; (defun init-perl--setup ()
+;; (defun my/init-perl--setup ()
 ;;    "Apply local cperl preferences."
 ;;    (cperl-set-style "PerlStyle")
 ;;    (setq cperl-continued-brace-offset -4)
@@ -24,7 +24,7 @@
 ;;    :interpreter (("perl" . cperl-mode)
 ;;                         ("perl5" . cperl-mode)
 ;;                         ("miniperl" . cperl-mode))
-;;    :hook (cperl-mode . init-perl--setup))
+;;    :hook (cperl-mode . my/init-perl--setup))
 
 (provide 'init-perl)
 

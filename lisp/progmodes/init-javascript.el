@@ -13,7 +13,7 @@
 
 ;;; Code:
 
-;; (defun init-javascript--setup-imenu ()
+;; (defun my/init-javascript--setup-imenu ()
 ;;   "Enable js2 imenu extras when available."
 ;;   (ignore-errors (js2-imenu-extras-setup)))
 
@@ -21,7 +21,7 @@
 ;;   :mode ("\\.js\\'" . js2-mode)
 ;;   :custom
 ;;   (js2-strict-missing-semi-warning nil)
-;;   :hook (js2-mode . init-javascript--setup-imenu))
+;;   :hook (js2-mode . my/init-javascript--setup-imenu))
 
 (provide 'init-javascript)
 

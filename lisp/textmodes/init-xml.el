@@ -14,13 +14,13 @@
 ;;; Code:
 
 ;; nxml-mode
-(defun init-nxml--setup ()
+(defun my/init-nxml--setup ()
   (set-syntax-table sgml-mode-syntax-table))
 
 (use-package nxml
   :custom
   (nxml-bind-meta-tab-to-complete-flag t)
-  :hook (nxml-mode . init-nxml--setup))
+  :hook (nxml-mode . my/init-nxml--setup))
 
 (provide 'init-xml)
 

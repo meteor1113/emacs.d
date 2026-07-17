@@ -37,43 +37,43 @@
 (when (fboundp 'ecb-minor-mode)
   (defvar ecb-minor-mode nil))
 
-(defun init-ecb-no-prompt-etags (orig-fun &rest args)
+(defun my/init-ecb--no-prompt-etags (orig-fun &rest args)
   "Disable etags's 'Visit tags table' dialog."
   (when tags-file-name
     (apply orig-fun args)))
 
-(advice-add 'ecb-symboldef-find-tag-by-etags :around #'init-ecb-no-prompt-etags)
+(advice-add 'ecb-symboldef-find-tag-by-etags :around #'my/init-ecb--no-prompt-etags)
 
 (with-eval-after-load "ecb-compilation"
   (setq ecb-compilation-buffer-names
-    (append ecb-compilation-buffer-names '(("*Process List*")
-                   ("*Proced*")
-                   (".notes")
-                   ("notes")
-                   ("*appt-buf*")
-                   ("*Compile-Log*")
-                   ("*etags tmp*")
-                   (" *svn-process*")
-                   ("*svn-info-output*")
-                   ("*Python Output*")
-                   ("*Org Agenda*")
-                   (" *EMMS Playlist*")
-                   ("*Moccur*")
-                   ("*Directory"))))
+        (append ecb-compilation-buffer-names '(("*Process List*")
+                                               ("*Proced*")
+                                               (".notes")
+                                               ("notes")
+                                               ("*appt-buf*")
+                                               ("*Compile-Log*")
+                                               ("*etags tmp*")
+                                               (" *svn-process*")
+                                               ("*svn-info-output*")
+                                               ("*Python Output*")
+                                               ("*Org Agenda*")
+                                               (" *EMMS Playlist*")
+                                               ("*Moccur*")
+                                               ("*Directory"))))
   (setq ecb-compilation-major-modes
-    (append ecb-compilation-major-modes '(change-log-mode
-                  calendar-mode
-                  diary-mode
-                  diary-fancy-display-mode
-                  xgtags-select-mode
-                  svn-status-mode
-                  svn-info-mode
-                  svn-status-diff-mode
-                  svn-log-view-mode
-                  svn-log-edit-mode
-                  erc-mode
-                  flycheck-error-list-mode
-                  gud-mode))))
+        (append ecb-compilation-major-modes '(change-log-mode
+                                              calendar-mode
+                                              diary-mode
+                                              diary-fancy-display-mode
+                                              xgtags-select-mode
+                                              svn-status-mode
+                                              svn-info-mode
+                                              svn-status-diff-mode
+                                              svn-log-view-mode
+                                              svn-log-edit-mode
+                                              erc-mode
+                                              flycheck-error-list-mode
+                                              gud-mode))))
 
 (provide 'init-ecb)
 
