@@ -68,6 +68,7 @@
 (require 'init-terraform nil 'noerror)
 
 ;; textmodes
+(require 'init-markdown nil 'noerror)
 (require 'init-org nil 'noerror)
 (require 'init-text nil 'noerror)
 (require 'init-xml nil 'noerror)
