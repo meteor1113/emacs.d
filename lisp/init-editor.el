@@ -143,6 +143,9 @@
 (with-eval-after-load 'whitespace
   (dolist (item '(tabs spaces lines indentation space-mark))
     (setq whitespace-style (remq item whitespace-style)))
+  (when (not (display-graphic-p))
+    (dolist (item '(newline-mark))
+      (setq whitespace-style (remq item whitespace-style))))
   (defun whitespace-post-command-hook ()
     "Hack whitespace, it's very slow in c++-mode."))
 ;; (setq whitespace-line-column 120)
