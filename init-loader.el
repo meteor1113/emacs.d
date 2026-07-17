@@ -65,6 +65,7 @@
 (require 'init-rust nil 'noerror)
 (require 'init-sh nil 'noerror)
 (require 'init-sql nil 'noerror)
+(require 'init-terraform nil 'noerror)
 
 ;; textmodes
 (require 'init-org nil 'noerror)

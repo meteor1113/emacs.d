@@ -188,11 +188,9 @@
       recentf-max-saved-items 100
       recentf-max-menu-items 30)
 (recentf-mode t)
-(defun my/init-recentf--track-closed-file (&rest _)
-  "Move current buffer to the beginning of the recent list after killed."
-  (recentf-track-opened-file))
-
-(advice-add 'recentf-track-closed-file :after #'my/init-recentf--track-closed-file)
+(advice-add 'recentf-track-closed-file :after
+            (lambda (&rest _)
+              (recentf-track-opened-file)))
 
 (setq filesets-data
       '(("linux"

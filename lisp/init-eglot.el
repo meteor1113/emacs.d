@@ -25,7 +25,8 @@
          (typescript-mode . eglot-ensure)
          (sh-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
-         (java-mode . eglot-ensure))
+         (java-mode . eglot-ensure)
+         (terraform-mode . eglot-ensure))
   :bind (:map eglot-mode-map
               ("C-c e r" . eglot-rename)
               ("C-c e a" . eglot-code-actions)
