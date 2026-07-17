@@ -16,8 +16,9 @@
 
 (use-package eglot
   :defer t
-  :hook ((python-mode . eglot-ensure)
+  :hook ((python-base-mode . eglot-ensure)
          (go-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)
          (c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
          (js-mode . eglot-ensure)
