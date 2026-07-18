@@ -43,6 +43,7 @@
   :ensure t
   :custom
   (auto-package-update-interval 7)
+  (auto-package-update-delete-old-versions t)
   ;; (auto-package-update-prompt-before-update t)
   ;; (auto-package-update-hide-results t)
   :config
