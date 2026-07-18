@@ -65,9 +65,6 @@
 ;; (set-frame-parameter (selected-frame) 'alpha (list 85 50)) ; Transparent
 ;; (add-to-list 'default-frame-alist (cons 'alpha (list 85 50)))
 
-;; (setq linum-eager nil)
-;; (when (fboundp 'global-linum-mode)
-;;   (global-linum-mode 1))
 (when (fboundp 'global-display-line-numbers-mode)
   (global-display-line-numbers-mode 1))
 

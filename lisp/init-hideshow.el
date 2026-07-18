@@ -25,9 +25,7 @@
         (when (eq 'code (overlay-get ov 'hs))
           (overlay-put ov 'display
                        (propertize
-                        (format "...<%d>"
-                                (count-lines (overlay-start ov)
-                                             (overlay-end ov)))
+                        (format "...<%d>" (count-lines (overlay-start ov) (overlay-end ov)))
                         'face 'mode-line))
           (overlay-put ov 'priority (overlay-end ov))
           (overlay-put ov 'keymap hs--overlay-keymap)
@@ -53,15 +51,13 @@
     (when (and (overlayp ov) (eq (overlay-get ov 'hs) 'code))
       (let* ((after (overlay-get ov 'after-string))
              (count-str (if (stringp after) after ""))
-             (display-str (propertize (format "...<%s>" count-str) 'face 'hideshowvis-hidden-region-face))
-             )
+             (display-str (propertize (format "...<%s>" count-str) 'face 'hideshowvis-hidden-region-face)))
         (overlay-put ov 'display display-str)
         (overlay-put ov 'pointer 'hand)
         ;; (overlay-put ov 'mouse-face 'highlight)
         (overlay-put ov 'help-echo "mouse-1: show hidden text")
         (overlay-put ov 'keymap hs--overlay-keymap)
-        (overlay-put ov 'after-string nil)
-        )))
+        (overlay-put ov 'after-string nil))))
   (advice-add 'hideshowvis-display-code-line-counts
               :after #'my/hideshowvis-add-click-behavior)
   )

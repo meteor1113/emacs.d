@@ -42,17 +42,13 @@
                    (gdb-enqueue-input
                     (list
                      (concat gdb-server-prefix
-                             (if (get-text-property 0 'gdb-enabled obj)
-                                 "disable "
-                               "enable ")
+                             (if (get-text-property 0 'gdb-enabled obj) "disable " "enable ")
                              (match-string 1 bptno) "\n")
                      'ignore))))
                 ((featurep 'gdb-mi)
                  (gud-basic-call
                   (concat
-                   (if (get-text-property 0 'gdb-enabled obj)
-                       "-break-disable "
-                     "-break-enable ")
+                   (if (get-text-property 0 'gdb-enabled obj) "-break-disable " "-break-enable ")
                    (get-text-property 0 'gdb-bptno obj))))
                 (t (error "No gud-ui or gui-mi?")))
         (message "May be there isn't have a breakpoint.")))))
