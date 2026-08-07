@@ -125,6 +125,34 @@
               ("C-c e" . envrc-command-map))
   :hook (after-init . envrc-global-mode))
 
+(use-package eat
+  :commands (eat eat-other-window)
+  :preface
+  (defun my/eat-cleanup-on-exit (process)
+    "Kill finished Eat buffers and their window on successful exit."
+    (when (zerop (process-exit-status process))
+      (kill-buffer)
+      (unless (eq (selected-window) (next-window))
+        (delete-window))))
+
+  (defun my/eat-project-other-window ()
+    "Open Eat in the current project root using another window."
+    (interactive)
+    (let ((default-directory (if-let ((project (project-current)))
+                                 (project-root project)
+                               default-directory)))
+      (call-interactively #'eat-other-window)))
+
+  (define-prefix-command 'my/eat-prefix)
+  (define-key my/eat-prefix (kbd "s") #'eat)
+  (define-key my/eat-prefix (kbd "t") #'eat-other-window)
+  (define-key my/eat-prefix (kbd "p") #'my/eat-project-other-window)
+
+  :bind (("C-c t" . my/eat-prefix))
+  :config
+  (add-hook 'eat-exit-hook #'my/eat-cleanup-on-exit)
+  (setq eat-term-scrollback-size (* 2 1024 1024)))
+
 ;; (use-package multi-term
 ;;   :commands (multi-term))
 
@@ -149,6 +177,7 @@
      "\\*Occur\\*"
      help-mode
      compilation-mode
+    eat-mode
      grep-mode
      occur-mode))
   (popper-group-function #'popper-group-by-projectile)
@@ -166,6 +195,7 @@
   :config
   (dolist (map '(("C-c e" . "eglot/envrc")
                  ("C-c p" . "cape")
+                 ("C-c t" . "terminal")
                  ("C-c y" . "yasnippet")
                  ("C-`" . "popper")
                  ("C-x t" . "tabs/treemacs")
