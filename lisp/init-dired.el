@@ -39,6 +39,9 @@
 (advice-add 'dired-find-file :around #'my/init-dired--find-file-single-buffer)
 (advice-add 'dired-up-directory :around #'my/init-dired--up-directory-single-buffer)
 
+(use-package diredfl
+  :hook (dired-mode . diredfl-mode))
+
 ;; dirvish
 
 (provide 'init-dired)
