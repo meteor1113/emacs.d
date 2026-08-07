@@ -17,7 +17,8 @@
 (defun my/init-nxml--setup ()
   (set-syntax-table sgml-mode-syntax-table))
 
-(use-package nxml
+(use-package nxml-mode
+  :ensure nil
   :custom
   (nxml-bind-meta-tab-to-complete-flag t)
   :hook (nxml-mode . my/init-nxml--setup))

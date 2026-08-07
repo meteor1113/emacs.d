@@ -165,7 +165,7 @@
 (ignore-errors (savehist-mode t))
 (setq bookmark-save-flag 1)
 (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S %U")
-(add-hook 'write-file-hooks 'time-stamp)
+(add-hook 'before-save-hook #'time-stamp)
 
 (setq make-backup-files t)
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -176,7 +176,7 @@
 ;; (setq version-control t)
 
 ;; (setq desktop-load-locked-desktop nil)  ; 'ask
-(setq desktop-not-loaded-hook (quote (desktop-save-mode-off)))
+(add-hook 'desktop-not-loaded-hook #'desktop-save-mode-off)
 (and (fboundp 'desktop-save-mode)
      (not (daemonp))
      (desktop-save-mode 1))
