@@ -16,9 +16,33 @@
 ;; change-log-mode
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
 
+(use-package grep
+  :ensure nil
+  :bind (:map grep-mode-map
+              ("e" . wgrep-change-to-wgrep-mode)))
+
+(use-package wgrep
+  :after grep)
+
+(use-package ibuffer-vc
+  :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
+  :config
+  (setq ibuffer-show-empty-filter-groups nil))
+
+(use-package git-link
+  :commands (git-link git-link-commit))
+
 (use-package magit
-  :bind (("\C-x g" . magit-status))
-  )
+  :bind (("\C-x g" . magit-status)
+         ("C-c v l" . git-link)
+         ("C-c v c" . git-link-commit))
+  :config
+  (setq magit-diff-refine-hunk 'all))
+
+(use-package magit-todos
+  :after magit
+  :config
+  (magit-todos-mode 1))
 
 (provide 'init-vc)
 

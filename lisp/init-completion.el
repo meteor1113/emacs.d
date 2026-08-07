@@ -15,34 +15,61 @@
 
 ;;; Code:
 
+(defun my/consult-get-text ()
+  "Get region contents or symbol at point."
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (thing-at-point 'symbol t)))
+
+(defun my/consult-line-with-symbol ()
+  "Run `consult-line' with a sensible initial query."
+  (interactive)
+  (consult-line (my/consult-get-text)))
+
+(defun my/consult-ripgrep-with-symbol ()
+  "Run `consult-ripgrep' from the current project root."
+  (interactive)
+  (let ((root (if-let ((project (project-current)))
+                  (project-root project)
+                default-directory)))
+    (consult-ripgrep root (my/consult-get-text))))
+
+(defun my/consult-ripgrep-todo ()
+  "Search common annotation keywords in the current project."
+  (interactive)
+  (let ((root (if-let ((project (project-current)))
+                  (project-root project)
+                default-directory)))
+    (consult-ripgrep root
+                     "\\(TODO\\|BUG\\|FIXME\\|HACK\\|XXX\\|NOTE\\|OPTIMIZE\\|REVIEW\\)")))
+
+(defun my/yasnippet-capf-setup ()
+  "Expose snippets through completion at point."
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+(defun my/eglot-yasnippet-capf-setup ()
+  "Merge Eglot and snippet completion into a single CAPF."
+  (setq-local completion-at-point-functions
+              (list (cape-capf-super
+                     #'eglot-completion-at-point
+                     #'yasnippet-capf))))
+
 ;; https://github.com/minad/consult
 (use-package consult
   :bind
   (("C-s" . my/consult-line-with-symbol)
    ("C-x b" . consult-buffer)
    ("M-s l" . consult-line)
-   ("M-s r" . my/consult-ripgrep-with-symbol))
-
+   ("M-s r" . my/consult-ripgrep-with-symbol)
+   ([remap goto-line] . consult-goto-line))
+  :init
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
   :config
-  (defun my/consult-get-text ()
-    "Get region or symbol at point."
-    (if (use-region-p)
-        (buffer-substring-no-properties (region-beginning) (region-end))
-      (thing-at-point 'symbol t)))
-
-  (defun my/consult-line-with-symbol ()
-    (interactive)
-    (consult-line (my/consult-get-text)))
-
-  (defun my/consult-ripgrep-with-symbol ()
-    (interactive)
-    (consult-ripgrep (project-root (project-current)) (my/consult-get-text)))
-
-  (defun my/consult-ripgrep-todo ()
-    (interactive)
-    (consult-ripgrep (project-root (project-current))
-                     "\\(TODO\\|BUG\\|FIXME\\|HACK\\|XXX\\|NOTE\\|OPTIMIZE\\|REVIEW\\)"))
-  )
+  (consult-customize
+   consult-theme :preview-key '("M-.")
+   consult-buffer consult-recent-file :preview-key '("M-.")
+   consult-line consult-ripgrep consult-grep :initial (my/consult-get-text)))
 
 ;; https://github.com/minad/vertico
 (use-package vertico
@@ -51,6 +78,20 @@
   (setq vertico-multiform-commands
         '((consult-line buffer)
           (consult-grep buffer))))
+
+(use-package embark
+  :after vertico
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         ("C-h B" . embark-bindings))
+  :bind (:map vertico-map
+              ("C-c C-c" . embark-act)
+              ("C-c C-o" . embark-export)
+              ("C-c C-l" . embark-collect)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; https://github.com/oantolin/orderless
 (use-package orderless
@@ -69,6 +110,13 @@
   ;; the mode gets enabled right away. Note that this forces loading the
   ;; package.
   (marginalia-mode))
+
+(use-package consult-dir
+  :after vertico
+  :bind (("C-x C-d" . consult-dir)
+         :map minibuffer-local-completion-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
 
 ;; https://github.com/minad/corfu
 (use-package corfu
@@ -115,7 +163,20 @@
   ;; ...
   )
 
-;; yasnippet + yasnippet-snippets + consult-yasnippet
+(use-package yasnippet
+  :hook (after-init . yas-global-mode))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
+
+(use-package consult-yasnippet
+  :after (consult yasnippet)
+  :bind ("C-c y" . consult-yasnippet))
+
+(use-package yasnippet-capf
+  :after (cape yasnippet)
+  :hook (((conf-mode prog-mode text-mode) . my/yasnippet-capf-setup)
+         (eglot-managed-mode . my/eglot-yasnippet-capf-setup)))
 
 (provide 'init-completion)
 

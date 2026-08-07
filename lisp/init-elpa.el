@@ -91,12 +91,55 @@
   :demand t
   :config (editorconfig-mode 1))
 
+(use-package exec-path-from-shell
+  :if (or (daemonp) (memq window-system '(x pgtk ns mac)))
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
+  :config
+  (dolist (var '("PATH"
+                 "MANPATH"
+                 "LANG"
+                 "LC_ALL"
+                 "PYTHONPATH"
+                 "VIRTUAL_ENV"
+                 "GOPATH"
+                 "GOROOT"
+                 "GOMODCACHE"
+                 "RUSTUP_HOME"
+                 "CARGO_HOME"
+                 "RUST_SRC_PATH"
+                 "NODE_PATH"
+                 "NVM_BIN"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
+(use-package envrc
+  :commands (envrc-global-mode)
+  :bind (:map envrc-mode-map
+              ("C-c e" . envrc-command-map))
+  :hook (after-init . envrc-global-mode))
+
 ;; (use-package multi-term
 ;;   :commands (multi-term))
 
 (use-package projectile
   :config
   (projectile-mode 1))
+
+(use-package which-key
+  :hook (after-init . which-key-mode)
+  :custom
+  (which-key-idle-delay 0.8)
+  (which-key-max-description-length 32)
+  (which-key-lighter nil)
+  :config
+  (dolist (map '(("C-c e" . "eglot/envrc")
+                 ("C-c p" . "cape")
+                 ("C-c y" . "yasnippet")
+                 ("C-x t" . "tabs/treemacs")
+                 ("M-s" . "search")
+                 ("C-x v" . "vc")))
+    (which-key-add-key-based-replacements (car map) (cdr map))))
 
 (use-package smart-compile
   :bind ([C-f7] . smart-compile))
