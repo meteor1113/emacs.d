@@ -44,6 +44,7 @@
 ;; (require 'init-flycheck nil 'noerror)
 (require 'init-hideshow nil 'noerror)
 (require 'init-highlight nil 'noerror)
+(require 'init-search nil 'noerror)
 ;; (require 'init-server nil 'noerror)
 (require 'init-tabline nil 'noerror)
 (require 'init-toolbar nil 'noerror)

@@ -16,14 +16,6 @@
 ;; change-log-mode
 (add-hook 'change-log-mode-hook 'turn-on-auto-fill)
 
-(use-package grep
-  :ensure nil
-  :bind (:map grep-mode-map
-              ("e" . wgrep-change-to-wgrep-mode)))
-
-(use-package wgrep
-  :after grep)
-
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
   :config
