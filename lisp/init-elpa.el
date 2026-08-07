@@ -56,6 +56,12 @@
   :bind ("C-c SPC" . ace-jump-mode)
   :config (set-face-background 'ace-jump-face-foreground "yellow"))
 
+(use-package ace-window
+  :bind (("M-o" . ace-window))
+  :custom
+  (aw-scope 'frame)
+  (aw-dispatch-always t))
+
 (use-package aggressive-indent
   :config
   (global-aggressive-indent-mode 1)
@@ -126,6 +132,31 @@
   :config
   (projectile-mode 1))
 
+(use-package popper
+  :bind (("C-`" . popper-toggle)
+         ("M-`" . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :custom
+  (popper-reference-buffers
+   '("\\*Messages\\*"
+     "\\*Warnings\\*"
+     "\\*Backtrace\\*"
+     "\\*Compile-Log\\*"
+     "\\*Help\\*"
+     "\\*Apropos\\*"
+     "\\*grep\\*"
+     "\\*rg\\*"
+     "\\*Occur\\*"
+     help-mode
+     compilation-mode
+     grep-mode
+     occur-mode))
+  (popper-group-function #'popper-group-by-projectile)
+  (popper-window-height 0.33)
+  :init
+  (popper-mode 1)
+  (popper-echo-mode 1))
+
 (use-package which-key
   :hook (after-init . which-key-mode)
   :custom
@@ -136,6 +167,7 @@
   (dolist (map '(("C-c e" . "eglot/envrc")
                  ("C-c p" . "cape")
                  ("C-c y" . "yasnippet")
+                 ("C-`" . "popper")
                  ("C-x t" . "tabs/treemacs")
                  ("M-s" . "search")
                  ("C-x v" . "vc")))
