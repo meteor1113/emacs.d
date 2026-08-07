@@ -50,12 +50,13 @@
   :config
   (auto-package-update-maybe))
 
-(use-package ace-jump-mode
-  ;; :ensure t
-  :defer t
-  :commands (ace-jump-mode)
-  :bind ("C-c SPC" . ace-jump-mode)
-  :config (set-face-background 'ace-jump-face-foreground "yellow"))
+(use-package avy
+  :commands (avy-goto-char-timer avy-goto-line)
+  :bind (("C-c SPC" . avy-goto-char-timer)
+         ("C-c g" . avy-goto-line))
+  :custom
+  (avy-timeout-seconds 0.3)
+  (avy-background t))
 
 (use-package ace-window
   :bind (("M-o" . ace-window))
@@ -153,9 +154,6 @@
   :config
   (add-hook 'eat-exit-hook #'my/eat-cleanup-on-exit)
   (setq eat-term-scrollback-size (* 2 1024 1024)))
-
-;; (use-package multi-term
-;;   :commands (multi-term))
 
 (use-package projectile
   :config
