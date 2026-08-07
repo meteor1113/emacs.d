@@ -42,6 +42,7 @@
 (require 'init-eglot nil 'noerror)
 (require 'init-emms nil 'noerror)
 ;; (require 'init-flycheck nil 'noerror)
+(require 'init-flymake nil 'noerror)
 (require 'init-hideshow nil 'noerror)
 (require 'init-highlight nil 'noerror)
 (require 'init-search nil 'noerror)
