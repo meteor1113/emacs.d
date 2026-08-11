@@ -1,29 +1,43 @@
-# Readme #
+# Liu Xin's Emacs Configuration
 
-- 这是Liu Xin的emacs配置文件，只支持emacs24以上版本，我用emacs主要进行C++开发和用org管理TODO，有时候也写点python。
-- bin目录用来保存windows下的可执行文件，比如windows默认没有的grep等。
-- elpa目录保存package.el安装的插件。
-- lisp目录是非package.el管理的elisp插件。
-- init目录是我的emacs配置。
-- etc/images目录是toolbar用的图标文件。
-- etc/sample是一些文件示例。
-- etc/snippets目录是yasnippet的snippets定义。
-- etc/templates目录是autoinsert模板。
+这是 [Liu Xin](mailto:meteor1113@qq.com) 的 Emacs 配置。
 
-# Install #
+## Features
 
-- git clone http://git.oschina.net/meteor1113/dotemacs.git
-- 把etc/sample/.emacs拷贝到$HOME目录下，修改load-path为dotemacs的实际路径，根据需要可注释掉部分内容。
-- 如果需要cedet，可以从 http://cedet.sourceforge.net 下载cedet并安装（比如安装到~/.emacs.d/lisp目录下）。
-- 如果需要用jdee开发java，可以从 http://jdee.sourceforge.net 下载jdee并安装，安装位置可参考cedet。
-- 如果需要用ropemacs开发python，可以分别从 http://rope.sourceforge.net ， http://pymacs.progiciels-bpi.ca/pymacs.html ， http://rope.sourceforge.net/ropemacs.html 下载rope，pymacs，ropemacs并安装，把pymacs编译时生成的pymacs.el文件安装到emacs里，安装位置可参考cedet。（注意ropemacs需要下载snapshot版，release的版本不能补全）
-- 如果需要开发go，除了go编译器外，还要配置好环境变量GOROOT，GOPATH，还需要安装godef，gocode。("go get -v github.com/rogpeppe/godef"、 "go get -u github.com/nsf/gocode")
-- 如果需要开发rust，除了rustc外，还要配置好环境变量RUST_SRC_PATH，还需要安装cargo，rustfmt，racer。("cargo install xxx")
+- 使用 `init-loader.el` 按模块加载配置，模块位于 `lisp/`、`lisp/progmodes/` 和 `lisp/textmodes/`。
+- 使用 `package.el` 配合 `use-package` 管理插件，插件默认从 MELPA 安装并保持更新。
+- 使用 Vertico、Consult、Orderless、Marginalia、Corfu 和 YASnippet 提供补全与搜索体验。
+- 使用 Eglot 和 Flymake 提供语言服务器集成及即时诊断。
+- 集成 Projectile、Treemacs、Magit、ibuffer-projectile、Avy、Eat 和 Popper 等工具。
+- 支持 C/C++、C#、Emacs Lisp、GDB、Go、Java、JavaScript、Perl、PHP、Python、Rust、Shell、SQL、Terraform、Markdown、Org 和 XML。
 
-# Screenshot #
+## Installation
 
-![](./etc/screenshots/cpp.png)
+需要 Emacs 29 或更高版本。
 
-# Email #
+```sh
+git clone https://github.com/meteor1113/emacs.d.git ~/.emacs.d
+```
 
-- meteor1113@qq.com
+根据需要可拷贝`etc/sample/emacs-custom.el`到`~/.emacs.d/emacs-custom.el`。
+
+启动 Emacs 后，`init-elpa.el` 会启用 MELPA，并通过 `use-package-always-ensure` 自动安装缺失的插件。首次启动需要网络连接；之后可重新启动 Emacs 完成剩余初始化。
+
+## Directory Layout
+
+- `bin/`：保存第三方可执行文件(Windows)。
+- `lisp/`：保存配置模块及其他 Emacs Lisp 文件。
+- `etc/images/`：保存工具栏使用的图标。
+- `etc/sample/`：保存示例文件。
+
+## External Tools
+
+根据使用的功能，建议提前安装并加入 `PATH`：
+- Git、`ripgrep`（项目搜索和 Projectile）。
+- 对应语言的编译器或运行时。
+- 对应语言服务器（Eglot）和 Flymake 使用的诊断工具。
+- Rust 的 `cargo`、`rustfmt`；Go 的工具链；Python 的 Ruff。
+
+## Screenshot
+
+![](./etc/screenshots/main.png)
