@@ -21,6 +21,10 @@
   :config
   (setq ibuffer-show-empty-filter-groups nil))
 
+(use-package ibuffer-projectile
+  :after projectile
+  :hook (ibuffer . ibuffer-projectile-set-filter-groups))
+
 (use-package git-link
   :commands (git-link git-link-commit))
 
