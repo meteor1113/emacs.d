@@ -161,8 +161,15 @@
 (auto-image-file-mode t)
 (winner-mode 1)
 
+(setq savehist-autosave-interval 300
+      history-length 1000
+      savehist-additional-variables '(mark-ring
+                                      global-mark-ring
+                                      search-ring
+                                      regexp-search-ring
+                                      extended-command-history))
+(savehist-mode t)
 (save-place-mode t)
-(ignore-errors (savehist-mode t))
 (setq bookmark-save-flag 1)
 (setq time-stamp-format "%:y-%02m-%02d %02H:%02M:%02S %U")
 (add-hook 'before-save-hook #'time-stamp)

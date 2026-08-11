@@ -157,6 +157,8 @@
 
 (use-package projectile
   :config
+  (when (executable-find "rg")
+    (setq projectile-generic-command "rg --files --hidden -0"))
   (projectile-mode 1))
 
 (use-package popper
