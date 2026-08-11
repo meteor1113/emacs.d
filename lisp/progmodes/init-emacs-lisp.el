@@ -14,7 +14,7 @@
 ;;; Code:
 
 (use-package emacs
-   :hook (emacs-lisp-mode . turn-on-eldoc-mode))
+   :hook (emacs-lisp-mode . eldoc-mode))
 
 (provide 'init-emacs-lisp)
 

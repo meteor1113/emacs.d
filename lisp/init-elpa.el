@@ -222,9 +222,9 @@
 
 (use-package undo-fu
   :config
-  (global-unset-key (kbd "C-z"))
-  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
-  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
+  (keymap-global-unset "C-z")
+  (keymap-global-set "C-z" #'undo-fu-only-undo)
+  (keymap-global-set "C-S-z" #'undo-fu-only-redo))
 
 (use-package vlf
   :commands (vlf)
