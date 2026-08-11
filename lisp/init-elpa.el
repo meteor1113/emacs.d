@@ -155,8 +155,15 @@
   (add-hook 'eat-exit-hook #'my/eat-cleanup-on-exit)
   (setq eat-term-scrollback-size (* 2 1024 1024)))
 
+(defun my/project-root ()
+  "Return the current project root, or `default-directory'."
+  (if-let ((project (project-current)))
+      (project-root project)
+    default-directory))
+
 (use-package projectile
   :config
+  (define-key projectile-mode-map (kbd "C-c p") #'projectile-command-map)
   (when (executable-find "rg")
     (setq projectile-generic-command "rg --files --hidden -0"))
   (projectile-mode 1))

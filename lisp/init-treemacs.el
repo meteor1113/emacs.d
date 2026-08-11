@@ -25,7 +25,7 @@
   )
 
 (use-package treemacs-projectile
-  :after treemacs)
+  :after (treemacs projectile))
 
 (provide 'init-treemacs)
 

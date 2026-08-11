@@ -27,19 +27,13 @@
 (defun my/consult-ripgrep-with-symbol ()
   "Run `consult-ripgrep' from the current project root."
   (interactive)
-  (let ((root (if-let ((project (project-current)))
-                  (project-root project)
-                default-directory)))
-    (consult-ripgrep root (my/consult-get-text))))
+  (consult-ripgrep (my/project-root) (my/consult-get-text)))
 
 (defun my/consult-ripgrep-todo ()
   "Search common annotation keywords in the current project."
   (interactive)
-  (let ((root (if-let ((project (project-current)))
-                  (project-root project)
-                default-directory)))
-    (consult-ripgrep root
-                     "\\(TODO\\|BUG\\|FIXME\\|HACK\\|XXX\\|NOTE\\|OPTIMIZE\\|REVIEW\\)")))
+  (consult-ripgrep (my/project-root)
+                   "\\(TODO\\|BUG\\|FIXME\\|HACK\\|XXX\\|NOTE\\|OPTIMIZE\\|REVIEW\\)"))
 
 ;; https://github.com/minad/consult
 (use-package consult

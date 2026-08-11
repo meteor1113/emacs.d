@@ -30,6 +30,15 @@
   (flymake-fringe-indicator-position 'right-fringe)
   (flymake-margin-indicator-position 'right-margin))
 
+(with-eval-after-load 'flymake
+  (defun my/elisp-flymake-byte-compile (original-function &rest arguments)
+    "Compile Emacs Lisp with the current configuration's load path."
+    (let ((elisp-flymake-byte-compile-load-path
+           (append elisp-flymake-byte-compile-load-path load-path)))
+      (apply original-function arguments)))
+  (advice-add 'elisp-flymake-byte-compile :around
+              #'my/elisp-flymake-byte-compile))
+
 (use-package flymake-ruff
   :hook (python-base-mode . flymake-ruff-load))
 
