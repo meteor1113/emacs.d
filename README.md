@@ -11,6 +11,13 @@
 - 集成 Projectile、Treemacs、Magit、ibuffer-projectile、Avy、Eat 和 Popper 等工具。
 - 支持 C/C++、C#、Emacs Lisp、GDB、Go、Java、JavaScript、Perl、PHP、Python、Rust、Shell、SQL、Terraform、Markdown、Org 和 XML。
 
+## Directory Layout
+
+- `bin/`：保存第三方可执行文件(Windows)。
+- `lisp/`：保存配置模块及其他 Emacs Lisp 文件。
+- `etc/images/`：保存工具栏使用的图标。
+- `etc/sample/`：保存示例文件。
+
 ## Installation
 
 需要 Emacs 29 或更高版本。
@@ -22,13 +29,6 @@ git clone https://github.com/meteor1113/emacs.d.git ~/.emacs.d
 根据需要可拷贝`etc/sample/emacs-custom.el`到`~/.emacs.d/emacs-custom.el`。
 
 启动 Emacs 后，`init-elpa.el` 会启用 MELPA，并通过 `use-package-always-ensure` 自动安装缺失的插件。首次启动需要网络连接；之后可重新启动 Emacs 完成剩余初始化。
-
-## Directory Layout
-
-- `bin/`：保存第三方可执行文件(Windows)。
-- `lisp/`：保存配置模块及其他 Emacs Lisp 文件。
-- `etc/images/`：保存工具栏使用的图标。
-- `etc/sample/`：保存示例文件。
 
 ## External Tools
 
