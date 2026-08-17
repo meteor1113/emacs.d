@@ -41,3 +41,8 @@ git clone https://github.com/meteor1113/emacs.d.git ~/.emacs.d
 ## Screenshot
 
 ![](./etc/screenshots/main.png)
+
+## References
+
+- https://github.com/purcell/emacs.d
+- https://github.com/seagle0128/.emacs.d
